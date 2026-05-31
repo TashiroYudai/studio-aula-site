@@ -1,0 +1,91 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* 文字サイズ変更ボタン用。html.text-lg / text-xl で拡大 */
+  font-size: 17px;
+}
+html.text-lg {
+  font-size: 18.5px;
+}
+html.text-xl {
+  font-size: 20px;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  @apply bg-cream text-ink antialiased font-sans;
+  line-height: 1.8;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: #ffd0a1;
+  color: #2b2620;
+}
+
+/* フォーカスリング（アクセシビリティ） */
+*:focus-visible {
+  outline: 3px solid #f07b22;
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+/* ヒーロー下線：手描き風にスーッと引かれる + 最後にキラッ */
+.draw-underline {
+  stroke-dasharray: 230;
+  animation: draw-underline 0.9s cubic-bezier(0.22, 0.7, 0.3, 1) 0.5s both;
+}
+@keyframes draw-underline {
+  from {
+    stroke-dashoffset: 230;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.underline-sparkle {
+  transform-origin: center;
+  animation: sparkle-pop 2.6s ease-in-out 1.25s infinite;
+}
+@keyframes sparkle-pop {
+  0% {
+    opacity: 0;
+    transform: scale(0) rotate(-40deg);
+  }
+  12% {
+    opacity: 1;
+    transform: scale(1.25) rotate(12deg);
+  }
+  24% {
+    transform: scale(1) rotate(0deg);
+  }
+  60%,
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+/* 区切りの波形（セクション境界の温かいアクセント） */
+.wave-divider {
+  display: block;
+  width: 100%;
+  height: 48px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}
