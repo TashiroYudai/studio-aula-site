@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
+import { MobileCTA } from "@/components/MobileCTA";
 import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -25,7 +26,7 @@ export default function RootLayout({
           crossOrigin="anonymous"
         />
         <link
-          href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700;900&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Zen+Old+Mincho:wght@400;500;600;700;900&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=Space+Mono:wght@400;700&family=Yusei+Magic&display=swap"
           rel="stylesheet"
         />
       </head>
@@ -33,6 +34,9 @@ export default function RootLayout({
         <Nav />
         <main>{children}</main>
         <Footer />
+        {/* スマホ固定バーの高さ分のスペーサー（最下部が隠れないように） */}
+        <div className="h-[72px] lg:hidden" aria-hidden />
+        <MobileCTA />
       </body>
     </html>
   );

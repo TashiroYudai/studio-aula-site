@@ -1,18 +1,18 @@
 // サイト共通データ。本人ヒアリング前の項目は仮置き（PLACEHOLDER）。
 export const site = {
   name: "Studio Aula",
-  tagline: "一生モノの、動ける体をつくろう。",
-  subTagline: "経験、年齢問わず、あなたに合わせたトレーニング。",
+  tagline: "そのお悩み、身体のクセかも？",
+  subTagline: "あなたに合わせたトレーニングを始めませんか？",
   // PLACEHOLDER: 本人確定待ち
   tel: "00-0000-0000",
   email: "hello@example.com",
-  address: "〒000-0000 ○○県○○市○○ 0-0-0",
+  address: "〒860-0076 熊本県熊本市中央区壺川2-3-69",
   hours: [
     { day: "平日", time: "10:00 – 21:00" },
     { day: "土曜", time: "9:00 – 18:00" },
     { day: "日・祝", time: "定休日" },
   ],
-  mapQuery: "熊本市", // PLACEHOLDER: 実住所に差し替え（@aula.kumamo より熊本と推定）
+  mapQuery: "熊本県熊本市中央区壺川2-3-69",
 } as const;
 
 export const nav = [
@@ -75,6 +75,7 @@ export const lessons: {
   points: string[]; // レッスンの内容・特徴
   effects: string[]; // こんな方に / 得られること
   note?: string;
+  price: string; // レッスン料金（表示用）
 }[] = [
   {
     id: "sb",
@@ -93,6 +94,7 @@ export const lessons: {
       "ソフトな運動でバランスを養う",
     ],
     effects: ["自分の体のクセを知りたい", "やさしい運動から始めたい", "姿勢・バランスを整えたい"],
+    price: "1回 500円（エアコン使用日は +100円）",
   },
   {
     id: "ms",
@@ -107,21 +109,7 @@ export const lessons: {
       "体の正しい動かし方を身につけながら、ストレッチで可動域を広げるクラスです。しっかり動けるようにしながら、筋力・体力アップを目指します。",
     points: ["正しい体の動かし方を習得", "ストレッチで柔軟性アップ", "筋力・体力づくり"],
     effects: ["筋力・体力をつけたい", "正しく動ける体になりたい", "運動を習慣にしたい"],
-  },
-  {
-    id: "personal",
-    name: "パーソナル",
-    sub: "完全マンツーマン",
-    lead: "あなただけのオーダーメイド。目標に最短で。",
-    need: "ボディメイク・不調改善",
-    dot: "#B84E12",
-    image:
-      "https://images.unsplash.com/photo-1594381898411-846e7d193883?auto=format&fit=crop&w=900&q=80",
-    description:
-      "専属トレーナーによる完全マンツーマン。目標・体・生活に合わせて、あなただけのメニューを設計します。ボディメイクから不調の改善まで、一人ひとりに最適なプログラムで。",
-    points: ["完全マンツーマン指導", "オーダーメイドのメニュー", "目標に合わせて柔軟に調整"],
-    effects: ["目標に最短で近づきたい", "周りの目を気にせず取り組みたい", "体の悩みを根本から改善したい"],
-    note: "予約制です。空き状況は Instagram でご確認ください。",
+    price: "1回 500円（エアコン使用日は +100円）",
   },
   {
     id: "zumba",
@@ -137,6 +125,23 @@ export const lessons: {
     points: ["世界中の音楽とステップ", "ダンスで楽しく有酸素運動", "振り付けは少しずつでOK"],
     effects: ["楽しく続けたい", "ダイエット・体力増進", "ストレスを発散したい"],
     note: "木曜は帯西コミュニティセンターで開催します（通常スタジオと会場が異なります）。",
+    price: "1回 500円（エアコン使用日は +100円）",
+  },
+  {
+    id: "personal",
+    name: "パーソナル",
+    sub: "完全マンツーマン",
+    lead: "あなただけのオーダーメイド。目標に最短で。",
+    need: "ボディメイク・不調改善",
+    dot: "#B84E12",
+    image:
+      "https://images.unsplash.com/photo-1594381898411-846e7d193883?auto=format&fit=crop&w=900&q=80",
+    description:
+      "専属トレーナーによる完全マンツーマン。目標・体・生活に合わせて、あなただけのメニューを設計します。ボディメイクから不調の改善まで、一人ひとりに最適なプログラムで。",
+    points: ["完全マンツーマン指導", "オーダーメイドのメニュー", "目標に合わせて柔軟に調整"],
+    effects: ["目標に最短で近づきたい", "周りの目を気にせず取り組みたい", "体の悩みを根本から改善したい"],
+    note: "予約制です。空き状況は Instagram でご確認ください。",
+    price: "1回 2,500円",
   },
 ];
 
@@ -154,7 +159,8 @@ export const line = {
 export const schedule: {
   day: string;
   kind?: "sat" | "sun";
-  sessions: { time: string; lessonId: string; note?: string }[];
+  // venue を付けたコマは別会場としてまとめて区切り表示する（未指定＝通常スタジオ）
+  sessions: { time: string; lessonId: string; venue?: string }[];
 }[] = [
   { day: "月", sessions: [
     { time: "11:00", lessonId: "sb" },
@@ -175,9 +181,9 @@ export const schedule: {
   { day: "木", sessions: [
     { time: "10:30", lessonId: "sb" },
     { time: "13:00", lessonId: "ms" },
-    { time: "18:20", lessonId: "zumba", note: "帯西コミセン" },
-    { time: "19:30", lessonId: "zumba", note: "帯西コミセン" },
-    { time: "20:40", lessonId: "zumba", note: "帯西コミセン" },
+    { time: "18:20", lessonId: "zumba", venue: "帯西コミセン" },
+    { time: "19:30", lessonId: "zumba", venue: "帯西コミセン" },
+    { time: "20:40", lessonId: "zumba", venue: "帯西コミセン" },
   ] },
   { day: "金", sessions: [
     { time: "11:00", lessonId: "ms" },
@@ -274,22 +280,13 @@ export const trainers: {
   image: string;
 }[] = [
   {
-    name: "代表トレーナー（お名前）",
+    name: "田代 綾",
     role: "代表 / パーソナルトレーナー",
     qualifications: ["NSCA-CPT", "健康運動指導士", "機能解剖学トレーナー"],
     message:
-      "その場しのぎではなく、10年後も動ける体へ。一人ひとりの体と暮らしに寄り添って、いっしょに「育てる」サポートをします。",
+      "その場しのぎではなく、10年後も動ける体へ。お子さまからご年配の方まで、一人ひとりの体と暮らしに寄り添って、いっしょに「育てる」サポートをします。マンツーマンだから、運動が初めての方も安心してください。",
     image:
       "https://images.unsplash.com/photo-1594381898411-846e7d193883?auto=format&fit=crop&w=700&q=80",
-  },
-  {
-    name: "トレーナー（お名前）",
-    role: "キッズ・シニア担当",
-    qualifications: ["キッズコーチング", "介護予防運動指導員"],
-    message:
-      "「運動って楽しい！」から始めましょう。お子さまもご年配の方も、笑顔で通える時間にします。",
-    image:
-      "https://images.unsplash.com/photo-1567013127542-490d757e51fc?auto=format&fit=crop&w=700&q=80",
   },
 ];
 

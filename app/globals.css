@@ -16,68 +16,95 @@ html.text-xl {
 html {
   scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
+  overflow-x: hidden;
 }
 
 body {
-  @apply bg-cream text-ink antialiased font-sans;
-  line-height: 1.8;
+  @apply bg-paper text-ink antialiased font-sans;
+  line-height: 1.85;
   text-rendering: optimizeLegibility;
 }
 
 ::selection {
-  background: #ffd0a1;
-  color: #2b2620;
+  background: #e9b45a;
+  color: #233a2d;
 }
 
 /* フォーカスリング（アクセシビリティ） */
 *:focus-visible {
-  outline: 3px solid #f07b22;
+  outline: 3px solid #3a5a45;
   outline-offset: 3px;
-  border-radius: 6px;
+  border-radius: 4px;
 }
 
-/* ヒーロー下線：手描き風にスーッと引かれる + 最後にキラッ */
-.draw-underline {
-  stroke-dasharray: 230;
-  animation: draw-underline 0.9s cubic-bezier(0.22, 0.7, 0.3, 1) 0.5s both;
+/* ── 図番ラベル：明朝の見出しに添える標本ラベル ── */
+.label {
+  @apply font-mono text-[11px] font-bold uppercase text-pine-500;
+  letter-spacing: 0.22em;
 }
-@keyframes draw-underline {
-  from {
-    stroke-dashoffset: 230;
-  }
+
+/* ── ブランドのキービジュアル：黄色い罫線ノート ── */
+.lined-paper {
+  background-color: #fcf4c9;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent 33px,
+    rgba(84, 110, 150, 0.26) 33px,
+    rgba(84, 110, 150, 0.26) 34px
+  );
+}
+/* 手書き見出しを少しだけ太らせてマーカー感を出す */
+.hand-bold {
+  -webkit-text-stroke: 0.6px currentColor;
+}
+
+/* 蜂蜜のマーカー下線（重要語を“塗った”感じ） */
+.marker {
+  background-image: linear-gradient(transparent 62%, rgba(233, 180, 90, 0.55) 62%);
+  background-repeat: no-repeat;
+}
+
+/* ── 署名：余白の書き込み（ヒーローの注釈線） ── */
+.annot-line {
+  stroke-dasharray: var(--len, 120);
+  stroke-dashoffset: var(--len, 120);
+  animation: annot-draw 0.7s cubic-bezier(0.4, 0.5, 0.2, 1) var(--delay, 0.4s) both;
+}
+@keyframes annot-draw {
   to {
     stroke-dashoffset: 0;
   }
 }
-
-.underline-sparkle {
-  transform-origin: center;
-  animation: sparkle-pop 2.6s ease-in-out 1.25s infinite;
+.annot-chip {
+  opacity: 0;
+  animation: annot-chip 0.5s ease-out var(--delay, 0.6s) both;
 }
-@keyframes sparkle-pop {
-  0% {
+@keyframes annot-chip {
+  from {
     opacity: 0;
-    transform: scale(0) rotate(-40deg);
+    transform: translateY(4px);
   }
-  12% {
+  to {
     opacity: 1;
-    transform: scale(1.25) rotate(12deg);
-  }
-  24% {
-    transform: scale(1) rotate(0deg);
-  }
-  60%,
-  100% {
-    opacity: 1;
-    transform: scale(1) rotate(0deg);
+    transform: translateY(0);
   }
 }
 
-/* 区切りの波形（セクション境界の温かいアクセント） */
-.wave-divider {
-  display: block;
-  width: 100%;
-  height: 48px;
+/* 注釈の先端リング（脈打つ） */
+.annot-ping {
+  animation: annot-ping 2.6s ease-out infinite;
+}
+@keyframes annot-ping {
+  0% {
+    transform: scale(0.6);
+    opacity: 0.7;
+  }
+  70%,
+  100% {
+    transform: scale(1.9);
+    opacity: 0;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -87,5 +114,11 @@ body {
     animation: none !important;
     transition: none !important;
     scroll-behavior: auto !important;
+  }
+  .annot-line {
+    stroke-dashoffset: 0;
+  }
+  .annot-chip {
+    opacity: 1;
   }
 }

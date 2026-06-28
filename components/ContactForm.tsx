@@ -17,8 +17,8 @@ export function ContactForm() {
 
   if (sent) {
     return (
-      <div className="rounded-4xl border border-line bg-cream p-10 text-center shadow-card">
-        <div className="mx-auto grid h-16 w-16 place-items-center rounded-full bg-leaf/15 text-leaf">
+      <div className="rounded-frame border border-line bg-card p-10 text-center shadow-card">
+        <div className="mx-auto grid h-16 w-16 place-items-center rounded-full bg-pine-50 text-pine-600">
           <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
             <path d="M5 12.5l4.5 4.5L19 6.5" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
@@ -29,7 +29,7 @@ export function ContactForm() {
         </p>
         <button
           onClick={() => setSent(false)}
-          className="mt-7 rounded-full border-2 border-line bg-white px-7 py-3 font-bold text-ink transition hover:border-sun-300"
+          className="mt-7 rounded-full border border-line bg-paper px-7 py-3 font-bold text-ink transition hover:border-pine-300 hover:text-pine-700"
         >
           続けて入力する
         </button>
@@ -38,14 +38,14 @@ export function ContactForm() {
   }
 
   return (
-    <form onSubmit={onSubmit} className="rounded-4xl border border-line bg-cream p-6 shadow-card md:p-9">
+    <form onSubmit={onSubmit} className="rounded-frame border border-line bg-card p-6 shadow-card md:p-9">
       <div className="grid gap-6">
         <Field label="お名前" required>
           <input name="name" required placeholder="山田 太郎" className={inputCls} />
         </Field>
 
-        <Field label="ご連絡先（電話 または メール）" required>
-          <input name="contact" required placeholder="090-0000-0000 / you@example.com" className={inputCls} />
+        <Field label="ご連絡先（メール または LINE名）" required>
+          <input name="contact" required placeholder="you@example.com / LINEのお名前" className={inputCls} />
         </Field>
 
         <Field label="年齢層" required>
@@ -53,10 +53,10 @@ export function ContactForm() {
             {AGE_GROUPS.map((g) => (
               <label
                 key={g}
-                className={`cursor-pointer rounded-full border-2 px-6 py-3 text-base font-bold transition ${
+                className={`cursor-pointer rounded-full border px-6 py-3 text-base font-bold transition ${
                   age === g
-                    ? "border-sun-500 bg-sun-50 text-sun-700"
-                    : "border-line bg-white text-sub hover:border-sun-300"
+                    ? "border-pine-500 bg-pine-50 text-pine-700"
+                    : "border-line bg-paper text-sub hover:border-pine-300"
                 }`}
               >
                 <input
@@ -88,7 +88,7 @@ export function ContactForm() {
 
         <button
           type="submit"
-          className="mt-2 w-full rounded-full bg-sun-500 px-8 py-4 text-lg font-bold text-white shadow-soft transition hover:bg-sun-600 hover:shadow-lift"
+          className="mt-2 w-full rounded-full bg-pine-600 px-8 py-4 text-lg font-bold text-card shadow-soft transition hover:bg-pine-700 hover:shadow-lift"
         >
           この内容で申し込む
         </button>
@@ -101,7 +101,7 @@ export function ContactForm() {
 }
 
 const inputCls =
-  "w-full rounded-2xl border-2 border-line bg-white px-4 text-lg text-ink placeholder:text-sub/50 transition focus:border-sun-400 h-14";
+  "w-full rounded-card border border-line bg-paper px-4 text-lg text-ink placeholder:text-sub/50 transition focus:border-pine-400 focus:bg-card h-14";
 
 function Field({
   label,
@@ -117,7 +117,7 @@ function Field({
       <span className="mb-2 flex items-center gap-2 text-base font-bold text-ink">
         {label}
         {required && (
-          <span className="rounded bg-sun-100 px-2 py-0.5 text-xs font-bold text-sun-700">
+          <span className="rounded bg-honey-100 px-2 py-0.5 font-mono text-xs font-bold text-honey-600">
             必須
           </span>
         )}

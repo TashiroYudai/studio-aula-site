@@ -5,56 +5,76 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // 陽だまりのオレンジ
-        sun: {
-          50: "#FFF7EE",
-          100: "#FFE9D2",
-          200: "#FFD0A1",
-          300: "#FCB36B",
-          400: "#F79545",
-          500: "#F07B22", // primary
-          600: "#DD6413",
-          700: "#B84E12",
-          800: "#8F3D12",
+        // 紙の地色（暖かい教科書のページ）
+        paper: "#F4F0E6",
+        card: "#FBF8F1", // 持ち上げた面
+        mist: "#ECE6D8", // 交互セクションの地
+        ink: "#232620", // 本文（緑みのある黒）
+        sub: "#6A685B", // 二次テキスト
+        line: "#E0D9C8", // 罫線
+
+        // 主役：深い植物の緑（育てる・知性・落ち着き）
+        pine: {
+          50: "#EDF1EB",
+          100: "#D6E1D5",
+          200: "#B0C4AF",
+          300: "#7E9C82",
+          400: "#4F6E55",
+          500: "#3A5A45",
+          600: "#2E4A3A",
+          700: "#233A2D",
+          800: "#1A2C22",
         },
-        cream: "#FBF6EE", // ページ背景（ナチュラル）
-        sand: "#F4EADA", // サブ面
-        ink: "#2B2620", // 本文（高コントラスト）
-        sub: "#6E655A", // 二次テキスト
-        line: "#ECE1D0", // 罫線
-        leaf: "#5E9E6E", // 健康の差し色（控えめ）
+        // 差し色：琥珀・蜂蜜（陽の温度。署名のマーカー）
+        honey: {
+          50: "#FBF1DC",
+          100: "#F6E1B8",
+          200: "#EFCA82",
+          300: "#E9B45A",
+          400: "#E0A33A",
+          500: "#C9882A",
+          600: "#A66E20",
+        },
+        clay: "#BD5B3A", // 温かい強調（パーソナル等）
+
+        // ブランドのキービジュアル（手書きノート）
+        note: {
+          paper: "#FCF4C9", // ノートの黄色
+          green: "#4F9B53", // 手書きの緑
+          orange: "#E5862B", // studio Aula のオレンジ
+        },
       },
       fontFamily: {
-        display: ['"Zen Maru Gothic"', "system-ui", "sans-serif"],
+        display: ['"Zen Old Mincho"', "serif"],
         sans: ['"Zen Kaku Gothic New"', "system-ui", "sans-serif"],
+        mono: ['"Space Mono"', '"Zen Kaku Gothic New"', "monospace"],
+        hand: ['"Yusei Magic"', '"Zen Kaku Gothic New"', "sans-serif"],
       },
       boxShadow: {
-        soft: "0 18px 40px -20px rgba(180, 90, 20, 0.28)",
-        card: "0 10px 30px -16px rgba(70, 50, 25, 0.22)",
-        lift: "0 24px 50px -22px rgba(180, 90, 20, 0.35)",
+        card: "0 1px 2px rgba(35,38,32,0.04), 0 14px 30px -20px rgba(35,38,32,0.30)",
+        soft: "0 10px 30px -18px rgba(46,74,58,0.40)",
+        lift: "0 22px 48px -26px rgba(35,38,32,0.42)",
       },
       borderRadius: {
-        "4xl": "2rem",
-        "5xl": "2.75rem",
+        card: "1.1rem",
+        frame: "1.5rem",
+      },
+      letterSpacing: {
+        label: "0.22em",
       },
       keyframes: {
         "fade-up": {
-          "0%": { opacity: "0", transform: "translateY(20px)" },
+          "0%": { opacity: "0", transform: "translateY(16px)" },
           "100%": { opacity: "1", transform: "translateY(0)" },
         },
-        float: {
-          "0%,100%": { transform: "translateY(0)" },
-          "50%": { transform: "translateY(-14px)" },
-        },
-        "blob-spin": {
-          "0%": { transform: "rotate(0deg)" },
-          "100%": { transform: "rotate(360deg)" },
+        "pulse-ring": {
+          "0%": { transform: "scale(0.7)", opacity: "0.7" },
+          "70%,100%": { transform: "scale(1.7)", opacity: "0" },
         },
       },
       animation: {
         "fade-up": "fade-up 0.7s cubic-bezier(.21,.6,.35,1) both",
-        float: "float 7s ease-in-out infinite",
-        "blob-spin": "blob-spin 40s linear infinite",
+        "pulse-ring": "pulse-ring 2.6s ease-out infinite",
       },
     },
   },

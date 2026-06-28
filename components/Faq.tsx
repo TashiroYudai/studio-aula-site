@@ -6,23 +6,23 @@ import { faq } from "@/lib/site";
 export function Faq() {
   const [open, setOpen] = useState<number | null>(0);
   return (
-    <div className="divide-y divide-line overflow-hidden rounded-4xl border border-line bg-cream">
+    <div className="divide-y divide-line overflow-hidden rounded-card border border-line bg-card">
       {faq.map((item, i) => {
         const isOpen = open === i;
         return (
           <div key={i}>
             <button
               onClick={() => setOpen(isOpen ? null : i)}
-              className="flex w-full items-center gap-4 px-6 py-5 text-left transition hover:bg-sand md:px-8"
+              className="flex w-full items-center gap-4 px-6 py-5 text-left transition hover:bg-pine-50/60 md:px-8"
               aria-expanded={isOpen}
             >
-              <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-sun-100 font-display text-sm font-bold text-sun-700">
+              <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-pine-50 font-mono text-sm font-bold text-pine-600">
                 Q
               </span>
               <span className="flex-1 text-lg font-bold text-ink">{item.q}</span>
               <span
-                className={`grid h-8 w-8 shrink-0 place-items-center rounded-full border border-line text-sun-600 transition ${
-                  isOpen ? "rotate-45 bg-sun-500 text-white" : ""
+                className={`grid h-8 w-8 shrink-0 place-items-center rounded-full border border-line text-pine-600 transition ${
+                  isOpen ? "rotate-45 border-pine-600 bg-pine-600 text-card" : ""
                 }`}
                 aria-hidden
               >
