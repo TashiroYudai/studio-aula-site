@@ -1,542 +1,493 @@
 import Link from "next/link";
-import {
-  lessons,
-  features,
-  news,
-  schedule,
-  instagram,
-  concerns,
-  testimonials,
-  line,
-} from "@/lib/site";
-import { SectionHead, SectionLabel } from "@/components/SectionHead";
+import { lessons, features, testimonials, concerns } from "@/lib/site";
 
-const lessonMap = Object.fromEntries(lessons.map((l) => [l.id, l]));
+/* ──────────────────────────────────────────────────────────────────────────
+   Studio Aula — トップページ「陽だまりのスクラップブック — 育てるノート」
+   ページ全体を、先生が3世代分の記録を貼り重ねた一冊の手書きノートに見立てる。
+   署名：朱の手描き矢印/丸囲み＋付箋＋マステ。テキスト本体は常に水平・高コントラスト。
+   ────────────────────────────────────────────────────────────────────────── */
+
+// 暖色トークン
+const CREAM = "#FBF3DC"; // 陽だまりの紙
+const SUN = "#F0851F"; // 主役オレンジ
+const MUSTARD = "#E8B73A"; // マステ・付箋
+const TERRA = "#C0492A"; // 手描きの朱（丸・矢印）
+const INK = "#4A2E18"; // 琥珀ブラウン（本文の濃色）
+const LEAF = "#4F9B53"; // 若葉グリーン（“身体のクセ”一語のみ）
+
+const FONT_DISPLAY = '"Dela Gothic One", system-ui, sans-serif';
+const FONT_BODY = '"Zen Maru Gothic", system-ui, sans-serif';
+const FONT_HAND = '"Yomogi", "Zen Maru Gothic", cursive';
+
+// 紙片の傾き（-2.5°〜+2° の小角度に固定）
+const TILT = ["-2.5deg", "1.6deg", "-1.4deg", "2deg", "-2deg", "1.2deg"];
+
+/* 朱の手描き矢印（SVG）。.annot-line で描き起こし、reduced-motion では即時表示。 */
+function HandArrow({
+  className = "",
+  delay = "0.5s",
+  d,
+  len,
+  flip = false,
+}: {
+  className?: string;
+  delay?: string;
+  d: string;
+  len: number;
+  flip?: boolean;
+}) {
+  return (
+    <svg
+      className={`pointer-events-none absolute hidden sm:block ${className}`}
+      viewBox="0 0 120 80"
+      fill="none"
+      aria-hidden="true"
+      style={{ transform: flip ? "scaleX(-1)" : undefined }}
+    >
+      <path
+        className="annot-line"
+        d={d}
+        stroke={TERRA}
+        strokeWidth={3.2}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        // @ts-expect-error CSS custom props
+        style={{ "--len": len, "--delay": delay }}
+      />
+      <path
+        className="annot-line"
+        d="M104 50 l12 4 l-8 9"
+        stroke={TERRA}
+        strokeWidth={3.2}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        // @ts-expect-error CSS custom props
+        style={{ "--len": 26, "--delay": `calc(${delay} + 0.35s)` }}
+      />
+    </svg>
+  );
+}
+
+// マスキングテープ（半透明マスタード）
+function Tape({ className = "", rotate = "-6deg" }: { className?: string; rotate?: string }) {
+  return (
+    <span
+      aria-hidden="true"
+      className={`absolute h-6 w-20 ${className}`}
+      style={{
+        transform: `rotate(${rotate})`,
+        background: `${MUSTARD}cc`,
+        boxShadow: "inset 0 0 0 1px rgba(255,255,255,.25)",
+      }}
+    />
+  );
+}
+
+// 付箋ラベル（Yomogi）
+function Sticky({
+  children,
+  rotate = "-3deg",
+  bg = MUSTARD,
+  className = "",
+}: {
+  children: React.ReactNode;
+  rotate?: string;
+  bg?: string;
+  className?: string;
+}) {
+  return (
+    <span
+      className={`inline-block px-3 py-1.5 text-base font-bold shadow-[0_8px_18px_-10px_rgba(74,46,24,.55)] ${className}`}
+      style={{ transform: `rotate(${rotate})`, background: bg, color: INK, fontFamily: FONT_HAND }}
+    >
+      {children}
+    </span>
+  );
+}
 
 export default function Home() {
-  return (
-    <>
-      <Hero />
-      <Concerns />
-      <Features />
-      <Lessons />
-      <Schedule />
-      <Voices />
-      <News />
-      <CtaBand />
-    </>
-  );
-}
+  const heroPhoto = lessons[0].image;
 
-/* ── ヒーロー（ブランドのキービジュアル＝手書きノート） ──────── */
-function Hero() {
-  return (
-    <section className="relative overflow-hidden">
-      <div className="mx-auto grid max-w-6xl grid-cols-1 items-start gap-10 px-6 pb-16 pt-9 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] md:gap-12 md:px-8 md:pb-24 md:pt-12">
-        {/* 左：手書きコピー（キービジュアルの文言・配置を踏襲）＋導線 */}
-        <div className="flex animate-fade-up flex-col">
-          <HeroCopy />
-
-          <p className="mt-8 max-w-md leading-relaxed text-sub">
-            体のしくみを知り、クセを整えて、一生モノの“動ける体”へ。キッズからシニアまで、3世代が同じ場所で通えるパーソナルトレーニングの教室です。
-          </p>
-
-          <div className="mt-7 flex flex-col gap-3 sm:flex-row">
-            <Link
-              href="/contact"
-              className="rounded-full bg-pine-600 px-8 py-4 text-center text-lg font-bold text-card shadow-soft transition hover:bg-pine-700 hover:shadow-lift"
-            >
-              体験を申し込む
-            </Link>
-            <Link
-              href="/lessons"
-              className="rounded-full border border-line bg-card px-8 py-4 text-center text-lg font-bold text-ink transition hover:border-pine-300 hover:text-pine-700"
-            >
-              レッスンを見る
-            </Link>
-          </div>
-          <p className="mt-5 text-sm text-sub">
-            ご予約・お問い合わせは LINE・フォームから。
-          </p>
-        </div>
-
-        {/* 右：注釈写真（PCで併置 / スマホでは下に） */}
-        <div className="animate-fade-up md:pt-2" style={{ animationDelay: "0.15s" }}>
-          <div className="relative overflow-hidden rounded-frame border border-line bg-card shadow-lift">
-            <img
-              src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=1100&q=80"
-              alt="トレーニングで笑顔の様子"
-              className="aspect-[4/3] w-full object-cover sm:aspect-[4/4.2]"
-              loading="eager"
-            />
-            <Leader side="r" pos="right-3 top-[12%]" label="姿勢" delay="0.5s" />
-            <Leader side="r" pos="right-3 top-[42%]" label="肩こり" delay="0.7s" />
-            <Leader side="l" pos="left-3 bottom-[16%]" label="ひざ・歩行" delay="0.9s" />
-          </div>
-          <p className="label mt-3 normal-case">
-            Fig. — あなたの悩みは、身体のどこに出ている？
-          </p>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ブランドのキービジュアルの「文言・配置」を踏襲した手書きコピー（背景は通常の紙） */
-function HeroCopy() {
-  return (
-    <div className="font-hand text-ink">
-      {/* お悩み（緑・左） */}
-      <p className="text-note-green text-[clamp(1.1rem,4.4vw,1.55rem)] leading-snug">
-        そのお悩み&thinsp;身体のクセかも？
-      </p>
-      {/* メインコピー（黒・左・大） */}
-      <h1 className="hand-bold mt-4 text-[clamp(2.3rem,10.6vw,3.6rem)] leading-[1.18]">
-        自分のカラダは<br />
-        自分次第
-      </h1>
-      {/* サブコピー（中央） */}
-      <p className="mt-8 text-center text-[clamp(1.25rem,5.6vw,1.95rem)] leading-snug">
-        私を育てる<br />
-        トレーニングプレイス
-      </p>
-      {/* サイン（オレンジ・右下） */}
-      <p className="mt-4 text-right text-note-orange text-[clamp(1.3rem,5.8vw,2rem)]">
-        studio&nbsp;Aula
-      </p>
-    </div>
-  );
-}
-
-/* 注釈リーダー：チップ＋引き出し線＋脈打つ点 */
-function Leader({
-  side,
-  pos,
-  label,
-  delay,
-}: {
-  side: "l" | "r";
-  pos: string;
-  label: string;
-  delay: string;
-}) {
-  const dot = (
-    <span className="relative grid h-2 w-2 shrink-0 place-items-center">
-      <span className="annot-ping absolute h-2.5 w-2.5 rounded-full bg-honey-400/60" />
-      <span className="h-2 w-2 rounded-full bg-honey-400 ring-2 ring-card" />
-    </span>
-  );
-  const lineEl = <span className="h-px w-7 bg-ink/35" aria-hidden />;
-  const chip = (
-    <span className="rounded-full border border-line bg-card/90 px-2.5 py-1 font-mono text-[11px] font-bold tracking-wider text-ink shadow-sm backdrop-blur-sm">
-      {label}
-    </span>
-  );
   return (
     <div
-      className={`annot-chip absolute z-10 flex items-center gap-1.5 ${pos}`}
-      style={{ "--delay": delay } as React.CSSProperties}
+      className="w-full overflow-x-hidden"
+      style={{
+        color: INK,
+        fontFamily: FONT_BODY,
+        backgroundColor: CREAM,
+        backgroundImage:
+          "repeating-linear-gradient(to bottom, transparent 0, transparent 37px, rgba(192,73,42,0.10) 37px, rgba(192,73,42,0.10) 38px)",
+      }}
     >
-      {side === "r" ? (
-        <>
-          {dot}
-          {lineEl}
-          {chip}
-        </>
-      ) : (
-        <>
-          {chip}
-          {lineEl}
-          {dot}
-        </>
-      )}
-    </div>
-  );
-}
-
-/* ── お悩み相談（フィールドノート） ───────────────── */
-function Concerns() {
-  return (
-    <section className="px-6 py-16 md:px-8 md:py-20">
-      <div className="mx-auto max-w-5xl overflow-hidden rounded-frame border border-line bg-card shadow-card">
-        <div className="grid gap-8 p-8 md:grid-cols-[1fr_auto] md:items-center md:p-12">
-          <div>
-            <SectionLabel>Consult</SectionLabel>
-            <p className="mt-4 text-sub">
-              {concerns.goals.join("・")}は、もちろん——
+      {/* ───────────────────── ① HERO ＝ ノートの見開き ───────────────────── */}
+      <section className="relative mx-auto max-w-6xl px-5 pb-14 pt-10 md:px-8 md:pb-20 md:pt-16" aria-labelledby="hero-heading">
+        <div className="grid items-center gap-10 md:grid-cols-[1.05fr_0.95fr]">
+          {/* 左：手書きコピー（テキストは常に水平） */}
+          <div className="relative">
+            <p className="mb-4 text-lg md:text-xl" style={{ fontFamily: FONT_HAND }}>
+              そのお悩み{" "}
+              <span style={{ color: LEAF }} className="hand-bold">
+                身体のクセ
+              </span>{" "}
+              かも？
             </p>
-            <h2 className="mt-2 font-display text-2xl font-bold leading-snug text-ink md:text-3xl">
-              その<span className="marker">体のお悩み</span>、ご相談ください。
-            </h2>
-            <div className="mt-7 flex flex-wrap gap-3">
-              {concerns.troubles.map((t) => (
-                <span
-                  key={t}
-                  className="inline-flex items-center gap-2 rounded-full border border-pine-200 bg-pine-50 px-5 py-2.5 font-display text-lg font-bold text-pine-700"
-                >
-                  <span className="h-1.5 w-1.5 rounded-full bg-honey-400" />
-                  {t}
+
+            <h1 id="hero-heading" className="relative leading-[1.08]">
+              <span className="block text-[13vw] sm:text-6xl md:text-7xl" style={{ fontFamily: FONT_DISPLAY, color: INK }}>
+                <span className="relative inline-block">
+                  自分
+                  <svg
+                    className="pointer-events-none absolute -inset-x-3 -inset-y-2"
+                    viewBox="0 0 160 90"
+                    fill="none"
+                    aria-hidden="true"
+                    preserveAspectRatio="none"
+                  >
+                    <path
+                      className="annot-line"
+                      d="M80 8 C128 6 156 26 154 46 C152 70 116 84 78 84 C40 84 6 70 6 46 C6 24 36 10 80 8"
+                      stroke={TERRA}
+                      strokeWidth={4}
+                      strokeLinecap="round"
+                      // @ts-expect-error CSS custom props
+                      style={{ "--len": 420, "--delay": "0.55s" }}
+                    />
+                  </svg>
                 </span>
-              ))}
+                のカラダは
+              </span>
+              <span className="block text-[13vw] sm:text-6xl md:text-7xl" style={{ fontFamily: FONT_DISPLAY, color: SUN }}>
+                自分次第
+              </span>
+            </h1>
+
+            <p className="mt-6 text-xl font-bold md:text-2xl" style={{ color: INK }}>
+              <span className="marker">『私を育てる』</span>トレーニングスタジオ
+            </p>
+
+            <div className="mt-8 flex flex-wrap items-center gap-3">
+              <Link
+                href="/contact"
+                className="rounded-md px-6 py-3.5 text-lg font-bold text-white shadow-[0_14px_26px_-12px_rgba(240,133,31,1)] transition-transform hover:-translate-y-0.5"
+                style={{ background: SUN, transform: "rotate(-1.8deg)" }}
+              >
+                体験を申し込む
+              </Link>
+              <Link
+                href="/lessons"
+                className="rounded-md border-2 px-5 py-3 text-base font-bold transition-transform hover:-translate-y-0.5"
+                style={{ borderColor: INK, color: INK, transform: "rotate(1.2deg)", background: CREAM }}
+              >
+                レッスンを見る
+              </Link>
+              <Link
+                href="/contact"
+                className="rounded-md px-5 py-3 text-base font-bold text-white transition-transform hover:-translate-y-0.5"
+                style={{ background: "#06C755", transform: "rotate(-0.8deg)" }}
+              >
+                LINEで相談
+              </Link>
             </div>
-            <p className="mt-5 text-sm text-sub">そのほかの不調も、お気軽にどうぞ。</p>
+
+            <p className="mt-7 text-3xl" style={{ fontFamily: FONT_HAND, color: TERRA, transform: "rotate(-3deg)", transformOrigin: "left" }}>
+              ✎ studio Aula
+            </p>
           </div>
+
+          {/* 右：傾いた写真スナップ＋マステ＋付箋＋矢印注釈 */}
+          <div className="relative mx-auto w-full max-w-sm md:max-w-none">
+            <div className="relative" style={{ transform: `rotate(${TILT[0]})` }}>
+              <Tape className="-left-2 -top-3" rotate="-9deg" />
+              <Tape className="-right-3 top-1/2" rotate="84deg" />
+              <div className="overflow-hidden rounded-sm border-[6px] border-white shadow-[0_26px_50px_-24px_rgba(74,46,24,.7)]">
+                <img
+                  src={heroPhoto}
+                  alt="Studio Aula のレッスンで笑顔で体を動かす様子"
+                  className="aspect-[4/5] w-full object-cover"
+                  loading="eager"
+                />
+              </div>
+              <Sticky rotate="6deg" className="absolute -right-4 -top-4">
+                肩こり
+              </Sticky>
+              <Sticky rotate="-7deg" bg="#F5C95A" className="absolute -bottom-5 -left-4">
+                膝・歩行
+              </Sticky>
+            </div>
+
+            <HandArrow className="-left-10 top-10 h-20 w-32" d="M6 8 C40 22 70 30 100 46" len={150} delay="0.7s" />
+            <p className="absolute -left-6 top-2 hidden text-lg sm:block" style={{ fontFamily: FONT_HAND, color: TERRA }} aria-hidden="true">
+              ここが整う
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* ───────────────── ② お悩み相談 ＝ 朱の手描き枠の「相談メモ」 ───────────────── */}
+      <section className="mx-auto max-w-5xl px-5 py-10 md:px-8 md:py-14" aria-labelledby="concern-heading">
+        <div
+          className="relative rounded-md border-[3px] border-dashed p-7 md:p-10"
+          style={{ borderColor: TERRA, background: "#FFFFFF", transform: `rotate(${TILT[2]})` }}
+        >
+          <Sticky rotate="-4deg" className="absolute -left-3 -top-5">
+            相談メモ
+          </Sticky>
+          <h2 id="concern-heading" className="text-2xl font-black md:text-3xl" style={{ color: INK }}>
+            こんなこと、ありませんか？
+          </h2>
+
+          <div className="mt-6 grid gap-6 sm:grid-cols-2">
+            <div>
+              <p className="mb-3 text-base font-bold" style={{ color: SUN, fontFamily: FONT_HAND }}>
+                ◎ こうなりたい
+              </p>
+              <ul className="flex flex-wrap gap-2.5">
+                {concerns.goals.map((g) => (
+                  <li key={g} className="rounded-full px-4 py-2 text-base font-bold" style={{ background: `${MUSTARD}55`, color: INK }}>
+                    {g}↑
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div>
+              <p className="mb-3 text-base font-bold" style={{ color: TERRA, fontFamily: FONT_HAND }}>
+                ◯ こんなお悩み
+              </p>
+              <ul className="flex flex-wrap gap-3">
+                {concerns.troubles.map((t) => (
+                  <li key={t} className="relative px-2 py-2 text-lg font-black" style={{ color: INK }}>
+                    {t}
+                    <svg className="pointer-events-none absolute -inset-1.5" viewBox="0 0 100 56" fill="none" aria-hidden="true" preserveAspectRatio="none">
+                      <path
+                        className="annot-line"
+                        d="M50 5 C82 4 97 16 96 28 C95 44 72 51 49 51 C26 51 4 44 4 28 C4 15 24 6 50 5"
+                        stroke={TERRA}
+                        strokeWidth={3}
+                        strokeLinecap="round"
+                        // @ts-expect-error CSS custom props
+                        style={{ "--len": 280, "--delay": "0.3s" }}
+                      />
+                    </svg>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+
+          <p className="mt-6 text-base md:text-lg" style={{ color: INK }}>
+            …もちろん、ぜんぶ大丈夫。まずは <span className="marker font-bold">あなたの体のクセ</span> を一緒に見つけるところから。
+          </p>
           <Link
             href="/contact"
-            className="inline-flex shrink-0 items-center justify-center rounded-full bg-pine-600 px-8 py-4 text-lg font-bold text-card shadow-soft transition hover:bg-pine-700"
+            className="mt-5 inline-block rounded-md px-5 py-3 text-base font-bold text-white transition-transform hover:-translate-y-0.5"
+            style={{ background: TERRA }}
           >
             お悩みを相談する
           </Link>
         </div>
-      </div>
-    </section>
-  );
-}
+      </section>
 
-/* ── なぜ選ばれるのか ───────────────────────────── */
-function Features() {
-  return (
-    <section className="border-y border-line bg-mist py-20 md:py-24">
-      <div className="mx-auto max-w-6xl px-6 md:px-8">
-        <SectionHead label="Why Aula" title="なぜ、選ばれているのか" />
-        <div className="mt-12 grid gap-6 md:grid-cols-3">
-          {features.map((f) => (
-            <div
-              key={f.title}
-              className="rounded-card border border-line bg-card p-8 shadow-card transition hover:-translate-y-1 hover:shadow-lift"
-            >
-              <span className="grid h-14 w-14 place-items-center rounded-card bg-pine-50 text-pine-600">
-                <FeatureIcon name={f.icon} />
-              </span>
-              <h3 className="mt-6 font-display text-xl font-bold leading-snug text-ink">
-                {f.title}
-              </h3>
-              <p className="mt-3 leading-relaxed text-sub">{f.body}</p>
-            </div>
-          ))}
+      {/* ─────────── ③ 3世代の帯（フルブリード・オレンジ地） ─────────── */}
+      <section className="relative w-full py-12 md:py-16" style={{ background: SUN }} aria-labelledby="gen-heading">
+        <div className="mx-auto max-w-6xl px-5 md:px-8">
+          <p className="text-base font-bold" style={{ color: "#FFE9CF", fontFamily: FONT_HAND }}>
+            キッズも、大人も、シニアも。
+          </p>
+          <h2 id="gen-heading" className="mt-1 text-2xl font-black text-white md:text-4xl" style={{ fontFamily: FONT_DISPLAY }}>
+            家族みんなで通えるスタジオ
+          </h2>
+
+          <div className="relative mt-8 flex flex-wrap items-start justify-center gap-x-2 gap-y-8 sm:justify-start">
+            {[
+              { label: "キッズ", img: lessons[1].image },
+              { label: "大人", img: lessons[2].image },
+              { label: "シニア", img: lessons[0].image },
+            ].map((g, i) => (
+              <figure
+                key={g.label}
+                className="relative w-36 sm:-ml-4 sm:w-44 md:w-52"
+                style={{ transform: `rotate(${TILT[i + 1]})`, zIndex: 3 - i }}
+              >
+                <Tape className="left-1/2 -top-2 -ml-10" rotate="-5deg" />
+                <div className="overflow-hidden rounded-sm border-[5px] border-white shadow-[0_20px_36px_-20px_rgba(74,46,24,.85)]">
+                  <img src={g.img} alt={`${g.label}世代のレッスンの様子`} className="aspect-square w-full object-cover" loading="lazy" />
+                </div>
+                <figcaption className="mt-2 text-center text-base font-black text-white" style={{ fontFamily: FONT_HAND }}>
+                  {g.label}
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+          <p className="mt-6 text-base font-bold text-white sm:hidden" style={{ fontFamily: FONT_HAND }}>
+            → 3世代が同じ場所で。
+          </p>
         </div>
-      </div>
-    </section>
-  );
-}
+      </section>
 
-/* ── 4つのレッスン ──────────────────────────────── */
-function Lessons() {
-  return (
-    <section className="py-20 md:py-24">
-      <div className="mx-auto max-w-6xl px-6 md:px-8">
-        <SectionHead
-          label="Lessons / 04"
-          title="ニーズに合わせた、4つのレッスン"
-          lead="目的や好みに合わせて選べます。組み合わせも自由。あなたに合うレッスンが、きっと見つかります。"
-        />
-        <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {lessons.map((l) => (
+      {/* ────────────── ④ 4つのレッスン ＝ ノートに貼った“ポラ写真” ────────────── */}
+      <section className="mx-auto max-w-6xl px-5 py-14 md:px-8 md:py-20" aria-labelledby="lessons-heading">
+        <div className="mb-10 flex items-end justify-between">
+          <h2 id="lessons-heading" className="text-2xl font-black md:text-4xl" style={{ color: INK, fontFamily: FONT_DISPLAY }}>
+            4つのレッスン
+          </h2>
+          <Sticky rotate="3deg" className="hidden sm:inline-block">
+            貼ってみた
+          </Sticky>
+        </div>
+
+        <div className="grid gap-x-8 gap-y-14 sm:grid-cols-2 lg:grid-cols-4">
+          {lessons.map((l, i) => (
             <article
               key={l.id}
-              className="group flex flex-col overflow-hidden rounded-card border border-line bg-card shadow-card transition hover:-translate-y-1 hover:shadow-lift"
+              className={`relative ${i % 2 === 0 ? "lg:mt-0" : "lg:mt-10"}`}
+              style={{ transform: `rotate(${TILT[i % TILT.length]})` }}
             >
-              <div className="relative aspect-[5/3.6] overflow-hidden">
-                <img
-                  src={l.image}
-                  alt={l.name}
-                  className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
-                  loading="lazy"
-                />
-                <span className="absolute left-3 top-3 inline-flex items-center gap-2 rounded-full bg-card/95 px-3 py-1.5 font-mono text-xs font-bold tracking-wider text-ink shadow-sm backdrop-blur-sm">
-                  <span className="h-2 w-2 rounded-full" style={{ background: l.dot }} />
-                  {l.name}
-                </span>
-              </div>
-              <div className="flex flex-1 flex-col p-6">
-                <p className="font-mono text-[11px] uppercase tracking-wider text-sub">{l.sub}</p>
-                <h3 className="mt-2 font-display text-lg font-bold leading-snug text-ink">
-                  {l.lead}
-                </h3>
-                <p className="mt-3 inline-flex w-fit rounded-full bg-mist px-3 py-1 text-xs font-bold text-sub">
-                  {l.need}
-                </p>
-                <Link
-                  href={`/lessons#${l.id}`}
-                  className="mt-auto inline-flex items-center gap-1.5 pt-5 font-bold text-pine-600 transition hover:gap-3"
-                >
-                  くわしく見る
-                  <span aria-hidden>→</span>
-                </Link>
-              </div>
+              <Tape className="left-1/2 -top-3 -ml-10" rotate={i % 2 ? "5deg" : "-6deg"} />
+              <Link href={`/lessons#${l.id}`} className="block bg-white p-3 pb-5 shadow-[0_22px_44px_-22px_rgba(74,46,24,.8)] transition-transform hover:-translate-y-1">
+                <div className="overflow-hidden">
+                  <img src={l.image} alt={`${l.name}（${l.sub}）のレッスンの様子`} className="aspect-[5/4] w-full object-cover" loading="lazy" />
+                </div>
+                <div className="px-1 pt-4">
+                  <div className="flex items-center gap-2">
+                    <span aria-hidden="true" className="h-3.5 w-3.5 rounded-full" style={{ background: l.dot }} />
+                    <h3 className="text-xl font-black" style={{ color: INK, fontFamily: FONT_DISPLAY }}>
+                      {l.name}
+                    </h3>
+                  </div>
+                  <p className="mt-1 text-sm font-bold" style={{ color: SUN, fontFamily: FONT_HAND }}>
+                    {l.sub}
+                  </p>
+                  <p className="mt-2 text-base leading-relaxed" style={{ color: INK }}>
+                    {l.lead}
+                  </p>
+                  <p className="mt-3 inline-block rounded px-2 py-1 text-sm font-bold" style={{ background: `${MUSTARD}44`, color: INK }}>
+                    {l.need}
+                  </p>
+                </div>
+              </Link>
             </article>
           ))}
         </div>
-      </div>
-    </section>
-  );
-}
 
-/* ── 週間スケジュール ───────────────────────────── */
-function Schedule() {
-  return (
-    <section id="schedule" className="border-y border-line bg-mist py-20 md:py-24">
-      <div className="mx-auto max-w-5xl px-6 md:px-8">
-        <SectionHead
-          label="Weekly Schedule"
-          title="週間スケジュール"
-          lead="毎週のグループレッスンの基本スケジュールです。日によって変更があります。最新の予定は Instagram でご確認ください。"
-        />
+        <div className="relative mt-16 flex flex-col items-center text-center">
+          <p className="text-lg font-bold" style={{ color: INK }}>
+            グループレッスンは
+          </p>
+          <p className="relative inline-block text-[15vw] leading-none sm:text-7xl" style={{ fontFamily: FONT_DISPLAY, color: TERRA }}>
+            500
+            <span className="text-3xl">円</span>
+            <HandArrow className="-right-36 top-2 h-20 w-32" d="M6 8 C40 24 72 34 100 48" len={150} delay="0.4s" flip />
+            <span className="absolute -right-40 top-6 hidden whitespace-nowrap text-xl sm:block" style={{ fontFamily: FONT_HAND, color: SUN }} aria-hidden="true">
+              1回ワンコイン！
+            </span>
+          </p>
+          <p className="mt-2 text-lg font-bold sm:hidden" style={{ fontFamily: FONT_HAND, color: SUN }}>
+            → 1回ワンコイン！
+          </p>
+          <p className="mt-2 text-sm" style={{ color: INK }}>
+            （パーソナルは 1回 2,500円・エアコン使用日は +100円）
+          </p>
+        </div>
+      </section>
 
-        <div className="mt-10 overflow-hidden rounded-card border border-line bg-card">
-          {schedule.map((d, i) => {
-            const main = d.sessions.filter((s) => !s.venue);
-            const venue = d.sessions.find((s) => s.venue)?.venue;
-            const venueSessions = d.sessions.filter((s) => s.venue);
-            return (
-              <div
-                key={d.day}
-                className={`flex items-center gap-4 px-5 py-4 md:gap-6 md:px-7 ${
-                  i !== schedule.length - 1 ? "border-b border-line" : ""
-                } ${d.kind ? "bg-pine-50/40" : ""}`}
-              >
-                <span
-                  className={`grid h-12 w-12 shrink-0 place-items-center rounded-card font-display text-xl font-bold ${
-                    d.kind === "sat"
-                      ? "bg-sky-100 text-sky-700"
-                      : d.kind === "sun"
-                      ? "bg-rose-100 text-rose-600"
-                      : "bg-mist text-ink"
-                  }`}
+      {/* ───────────── ⑤ お客様の声 ＝ 壁に貼った付箋3色 ───────────── */}
+      <section className="relative w-full py-14 md:py-20" style={{ background: "#FCE7C0" }} aria-labelledby="voice-heading">
+        <div className="mx-auto max-w-6xl px-5 md:px-8">
+          <h2 id="voice-heading" className="mb-10 text-2xl font-black md:text-4xl" style={{ color: INK, fontFamily: FONT_DISPLAY }}>
+            通っている方の声
+          </h2>
+
+          <ul className="grid gap-8 sm:grid-cols-3">
+            {testimonials.map((t, i) => {
+              const bg = [MUSTARD + "dd", "#F5B0A0", "#FFD27A"][i % 3];
+              return (
+                <li
+                  key={t.who}
+                  className="relative p-6 shadow-[0_22px_40px_-22px_rgba(74,46,24,.85)]"
+                  style={{ background: bg, color: INK, transform: `rotate(${TILT[i + 2]})` }}
                 >
-                  {d.day}
-                </span>
-
-                <div className="flex flex-1 flex-col gap-2.5">
-                  {d.sessions.length === 0 ? (
-                    <span className="font-bold text-rose-500">定休日</span>
-                  ) : (
-                    <>
-                      {main.length > 0 && (
-                        <div className="flex flex-wrap gap-2.5">
-                          {main.map((s, j) => (
-                            <SessionChip key={j} time={s.time} lessonId={s.lessonId} />
-                          ))}
-                        </div>
-                      )}
-                      {venueSessions.length > 0 && (
-                        <div className="flex w-fit flex-wrap items-center gap-2 rounded-card border border-dashed border-honey-400 bg-honey-50/60 px-3 py-2">
-                          {venueSessions.map((s, j) => (
-                            <SessionChip key={j} time={s.time} lessonId={s.lessonId} />
-                          ))}
-                          <span className="inline-flex items-center gap-1 pl-1 font-mono text-[11px] font-bold text-honey-600">
-                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden>
-                              <path d="M12 21s7-5.7 7-11a7 7 0 10-14 0c0 5.3 7 11 7 11z" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
-                              <circle cx="12" cy="10" r="2.4" stroke="currentColor" strokeWidth="2" />
-                            </svg>
-                            {venue}
-                          </span>
-                        </div>
-                      )}
-                    </>
-                  )}
-                </div>
-              </div>
-            );
-          })}
-        </div>
-
-        <ul className="mt-5 space-y-1.5 px-1 text-sm text-sub">
-          <li>※ 表示はグループレッスンのみです。<span className="font-bold text-ink">パーソナルは予約制</span>（空き状況は Instagram をご確認ください）。</li>
-          <li>※ <span className="font-bold text-ink">木曜の ZUMBA</span> は<span className="font-bold text-ink">帯西コミュニティセンター</span>で開催します（通常のスタジオとは会場が異なります）。</li>
-        </ul>
-
-        <div className="mt-8 flex flex-col items-center gap-4 rounded-card border border-line bg-card p-7 text-center sm:flex-row sm:justify-between sm:text-left">
-          <div>
-            <p className="font-display text-lg font-bold text-ink">
-              当日の最新スケジュールは Instagram へ
-            </p>
-            <p className="mt-1 text-sub">
-              臨時レッスン・お休み・時間変更はインスタで随時お知らせしています。
-            </p>
-          </div>
-          <a
-            href={instagram}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex shrink-0 items-center gap-2.5 rounded-full bg-pine-600 px-7 py-4 text-lg font-bold text-card shadow-soft transition hover:bg-pine-700"
-          >
-            <InstagramIcon />
-            Instagramで確認
-          </a>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function SessionChip({ time, lessonId }: { time: string; lessonId: string }) {
-  const l = lessonMap[lessonId];
-  return (
-    <span className="inline-flex items-center gap-2 rounded-full border border-line bg-paper px-3.5 py-2">
-      <span className="font-mono text-sm font-bold tabular-nums text-ink">{time}</span>
-      <span className="inline-flex items-center gap-1.5 text-sm font-bold text-ink">
-        <span className="h-2.5 w-2.5 rounded-full" style={{ background: l?.dot }} />
-        {l?.name}
-      </span>
-    </span>
-  );
-}
-
-function InstagramIcon() {
-  return (
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden>
-      <rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" strokeWidth="2" />
-      <circle cx="12" cy="12" r="4" stroke="currentColor" strokeWidth="2" />
-      <circle cx="17.5" cy="6.5" r="1.3" fill="currentColor" />
-    </svg>
-  );
-}
-
-/* ── お客様の声 ─────────────────────────────────── */
-function Voices() {
-  return (
-    <section className="py-20 md:py-24">
-      <div className="mx-auto max-w-6xl px-6 md:px-8">
-        <SectionHead
-          label="Voice"
-          title="通ってくれている方の声"
-          lead="少人数・完全予約制だからこそ、一人ひとりに寄り添えます。実際に通われている方の声をご紹介します。"
-        />
-        <div className="mt-12 grid gap-6 md:grid-cols-3">
-          {testimonials.map((t, i) => (
-            <figure
-              key={i}
-              className="flex flex-col rounded-card border border-line bg-card p-7 shadow-card"
-            >
-              <span className="font-display text-5xl leading-none text-honey-300" aria-hidden>
-                &ldquo;
-              </span>
-              <blockquote className="mt-2 flex-1 leading-relaxed text-ink">
-                {t.body}
-              </blockquote>
-              <figcaption className="mt-6 flex items-center gap-3 border-t border-line pt-5">
-                <span className="grid h-11 w-11 place-items-center rounded-full bg-pine-50 font-display font-bold text-pine-600">
-                  {t.who.slice(0, 1)}
-                </span>
-                <span>
-                  <span className="block font-bold text-ink">{t.who}</span>
-                  <span className="mt-0.5 inline-block rounded-full bg-honey-100 px-2.5 py-0.5 font-mono text-[11px] font-bold text-honey-600">
+                  <span aria-hidden="true" className="absolute left-1/2 -top-2 -ml-1.5 h-3 w-3 rounded-full shadow-md" style={{ background: TERRA }} />
+                  <p className="text-base leading-relaxed" style={{ fontFamily: FONT_BODY }}>
+                    「{t.body}」
+                  </p>
+                  <p className="mt-4 text-lg font-bold" style={{ fontFamily: FONT_HAND }}>
+                    {t.who}
+                  </p>
+                  <p className="mt-1 inline-block rounded px-2 py-0.5 text-sm font-bold" style={{ background: "#ffffffaa", color: TERRA }}>
                     {t.tag}
-                  </span>
-                </span>
-              </figcaption>
-            </figure>
-          ))}
+                  </p>
+                </li>
+              );
+            })}
+          </ul>
+          <p className="mt-6 text-sm" style={{ color: INK }}>
+            ※ 掲載は一例です（実際にいただいた声に差し替え予定）。
+          </p>
         </div>
-        <p className="mt-6 text-center text-sm text-sub">
-          ※ 掲載は一例です（実際にいただいた声に差し替え予定）。
-        </p>
-      </div>
-    </section>
-  );
-}
+      </section>
 
-/* ── 新着情報 ───────────────────────────────────── */
-function News() {
-  return (
-    <section className="border-y border-line bg-mist py-20 md:py-24">
-      <div className="mx-auto max-w-4xl px-6 md:px-8">
-        <SectionHead label="News" title="新着情報" />
-        <ul className="mt-10 divide-y divide-line overflow-hidden rounded-card border border-line bg-card">
-          {news.map((n, i) => (
-            <li key={i}>
-              <Link
-                href="/contact"
-                className="flex flex-col gap-2 px-7 py-6 transition hover:bg-pine-50/50 sm:flex-row sm:items-center sm:gap-5"
+      {/* ─────────────── なぜ選ばれる（features）＝メモの箇条書き ─────────────── */}
+      <section className="mx-auto max-w-5xl px-5 py-14 md:px-8 md:py-16" aria-labelledby="why-heading">
+        <h2 id="why-heading" className="mb-8 text-2xl font-black md:text-3xl" style={{ color: INK, fontFamily: FONT_DISPLAY }}>
+          Aula が大切にしていること
+        </h2>
+        <ul className="space-y-5">
+          {features.map((f, i) => (
+            <li key={f.title} className="flex gap-4" style={{ transform: `rotate(${i % 2 ? "0.5deg" : "-0.5deg"})` }}>
+              <span
+                aria-hidden="true"
+                className="mt-1 grid h-9 w-9 shrink-0 place-items-center rounded-full text-lg font-black"
+                style={{ background: [SUN, TERRA, MUSTARD][i % 3], color: i === 2 ? INK : "#fff", fontFamily: FONT_HAND }}
               >
-                <time className="font-mono text-sm font-bold tabular-nums text-sub">
-                  {n.date}
-                </time>
-                <span className="w-fit rounded-full bg-pine-50 px-3 py-1 font-mono text-[11px] font-bold text-pine-600">
-                  {n.category}
-                </span>
-                <span className="font-medium text-ink sm:flex-1">{n.title}</span>
-              </Link>
+                {i + 1}
+              </span>
+              <div>
+                <h3 className="text-lg font-black" style={{ color: INK }}>
+                  <span className="marker">{f.title}</span>
+                </h3>
+                <p className="mt-1 text-base leading-relaxed" style={{ color: INK }}>
+                  {f.body}
+                </p>
+              </div>
             </li>
           ))}
         </ul>
-      </div>
-    </section>
-  );
-}
+      </section>
 
-/* ── CTA（深緑のバンド） ────────────────────────── */
-function CtaBand() {
-  return (
-    <section className="px-6 py-20 md:px-8 md:py-24">
-      <div className="relative mx-auto max-w-5xl overflow-hidden rounded-frame bg-pine-700 px-8 py-16 text-center shadow-lift md:py-20">
+      {/* ──────────────────────── ⑥ CTA バンド（オレンジ全面） ──────────────────────── */}
+      <section className="relative w-full overflow-hidden py-16 md:py-24" style={{ background: SUN }} aria-labelledby="cta-heading">
         <span
-          className="pointer-events-none absolute -right-6 -top-8 select-none font-display text-[8rem] font-black leading-none text-honey-300/10 md:text-[12rem]"
-          aria-hidden
+          aria-hidden="true"
+          className="pointer-events-none absolute -right-6 top-1/2 -translate-y-1/2 select-none text-[40vw] leading-none opacity-10 md:text-[20rem]"
+          style={{ fontFamily: FONT_DISPLAY, color: "#fff" }}
         >
           育
         </span>
-        <p className="relative font-mono text-xs uppercase tracking-label text-honey-300">
-          First step
-        </p>
-        <h2 className="relative mt-4 font-display text-3xl font-bold leading-tight text-paper md:text-4xl">
-          まずは、体験から。
-        </h2>
-        <p className="relative mx-auto mt-4 max-w-xl text-lg text-paper/85">
-          カウンセリングと体験トレーニングで、あなたに合うかを確かめてください。
-        </p>
-        <div className="relative mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
-          <a
-            href={line.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2.5 rounded-full bg-[#06C755] px-10 py-4 text-lg font-bold text-white shadow-soft transition hover:scale-[1.03]"
-          >
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
-              <path d="M12 3C6.9 3 2.8 6.3 2.8 10.4c0 3.7 3.3 6.8 7.7 7.4.3.06.7.2.8.46.07.24.05.6.02.85l-.13.8c-.04.24-.19.94.82.51 1.01-.42 5.45-3.21 7.44-5.5 1.37-1.5 2.03-3.02 2.03-4.52C21.5 6.3 17.4 3 12 3z" />
-            </svg>
-            LINEで申し込む
-          </a>
-          <Link
-            href="/contact"
-            className="rounded-full bg-honey-300 px-10 py-4 text-lg font-bold text-pine-800 shadow-soft transition hover:scale-[1.03]"
-          >
-            フォームで申し込む
-          </Link>
+        <div className="relative mx-auto max-w-4xl px-5 text-center md:px-8">
+          <p className="text-lg font-bold" style={{ color: "#FFE9CF", fontFamily: FONT_HAND }}>
+            考えるより、まず一歩。
+          </p>
+          <h2 id="cta-heading" className="mt-2 text-4xl font-black text-white md:text-6xl" style={{ fontFamily: FONT_DISPLAY }}>
+            まずは、体験から。
+          </h2>
+          <div className="mt-9 flex flex-wrap items-center justify-center gap-4">
+            <Link
+              href="/contact"
+              className="rounded-md bg-white px-8 py-4 text-lg font-black shadow-[0_18px_34px_-16px_rgba(74,46,24,1)] transition-transform hover:-translate-y-0.5"
+              style={{ color: TERRA, transform: "rotate(-1.5deg)" }}
+            >
+              体験を申し込む
+            </Link>
+            <Link
+              href="/contact"
+              className="rounded-md px-7 py-4 text-lg font-black text-white shadow-[0_18px_34px_-16px_rgba(6,199,85,1)] transition-transform hover:-translate-y-0.5"
+              style={{ background: "#06C755", transform: "rotate(1.2deg)" }}
+            >
+              LINEで相談
+            </Link>
+          </div>
         </div>
-      </div>
-    </section>
-  );
-}
-
-/* ── 部品 ──────────────────────────────────────── */
-function FeatureIcon({ name }: { name: string }) {
-  const p = {
-    fill: "none",
-    stroke: "currentColor",
-    strokeWidth: 1.9,
-    strokeLinecap: "round" as const,
-    strokeLinejoin: "round" as const,
-  };
-  if (name === "person")
-    return (
-      <svg width="28" height="28" viewBox="0 0 24 24">
-        <circle cx="12" cy="7.5" r="3.2" {...p} />
-        <path d="M5.5 20c0-3.6 2.9-6.5 6.5-6.5s6.5 2.9 6.5 6.5" {...p} />
-      </svg>
-    );
-  if (name === "book")
-    return (
-      <svg width="28" height="28" viewBox="0 0 24 24">
-        <path d="M4 5.5A1.5 1.5 0 015.5 4H11v15H5.5A1.5 1.5 0 014 17.5z" {...p} />
-        <path d="M20 5.5A1.5 1.5 0 0018.5 4H13v15h5.5a1.5 1.5 0 001.5-1.5z" {...p} />
-      </svg>
-    );
-  return (
-    <svg width="28" height="28" viewBox="0 0 24 24">
-      <path d="M4 11l8-6 8 6" {...p} />
-      <path d="M6 10v8.5A1.5 1.5 0 007.5 20h9a1.5 1.5 0 001.5-1.5V10" {...p} />
-    </svg>
+      </section>
+    </div>
   );
 }

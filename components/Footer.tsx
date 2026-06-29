@@ -1,28 +1,40 @@
 import Link from "next/link";
 import { nav, site, instagram, line } from "@/lib/site";
-import { Sprout } from "@/components/Sprout";
+
+const CREAM = "#FBF3DC";
+const SUN = "#F0851F";
+const TERRA = "#C0492A";
+const INK = "#4A2E18";
+const HAND = '"Yomogi", "Zen Maru Gothic", cursive';
+const BODY = '"Zen Maru Gothic", system-ui, sans-serif';
 
 export function Footer() {
   return (
-    <footer className="mt-24 bg-pine-800 text-paper/85">
-      <div className="mx-auto grid max-w-6xl grid-cols-1 gap-10 px-6 py-16 md:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)_minmax(0,1fr)] md:px-8">
+    <footer className="w-full border-t-2 border-dashed" style={{ borderColor: `${INK}33`, background: CREAM, color: INK, fontFamily: BODY }}>
+      <div className="mx-auto grid max-w-6xl gap-10 px-5 py-14 md:grid-cols-[1.4fr_1fr_1fr] md:px-8">
         <div>
           <div className="flex items-center gap-2.5">
-            <span className="grid h-9 w-9 place-items-center rounded-full bg-honey-300 text-pine-800">
-              <Sprout className="h-5 w-5" />
+            <span
+              aria-hidden="true"
+              className="grid h-9 w-9 place-items-center rounded-full text-lg font-black"
+              style={{ background: TERRA, color: CREAM, transform: "rotate(-4deg)", fontFamily: HAND }}
+            >
+              A
             </span>
-            <span className="font-display text-lg font-bold text-paper">{site.name}</span>
+            <span className="text-2xl" style={{ fontFamily: HAND }}>
+              studio Aula
+            </span>
           </div>
-          <p className="mt-5 max-w-xs text-sm leading-relaxed text-paper/65">
-            子供からお年寄りまで、一人ひとりに必要なトレーニングで
-            「動ける体」を育てるパーソナルトレーニング教室です。
+          <p className="mt-4 max-w-xs text-sm leading-relaxed" style={{ color: `${INK}cc` }}>
+            子供からお年寄りまで、一人ひとりに必要なトレーニングで「動ける体」を育てるパーソナルトレーニング教室です。
           </p>
-          <div className="mt-6 flex flex-wrap gap-3">
+          <div className="mt-5 flex flex-wrap gap-3">
             <a
               href={line.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-full bg-[#06C755] px-4 py-2.5 text-sm font-bold text-white transition hover:brightness-110"
+              className="inline-flex items-center gap-2 rounded-md px-4 py-2.5 text-sm font-bold text-white transition-transform hover:-translate-y-0.5"
+              style={{ background: "#06C755" }}
             >
               <LineGlyph /> LINE
             </a>
@@ -30,7 +42,8 @@ export function Footer() {
               href={instagram}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-full border border-paper/25 px-4 py-2.5 text-sm font-bold text-paper/90 transition hover:border-honey-300 hover:text-paper"
+              className="inline-flex items-center gap-2 rounded-md border-2 px-4 py-2.5 text-sm font-bold transition-transform hover:-translate-y-0.5"
+              style={{ borderColor: `${INK}33`, color: INK }}
             >
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden>
                 <rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" strokeWidth="2" />
@@ -43,11 +56,13 @@ export function Footer() {
         </div>
 
         <div>
-          <h3 className="label text-honey-300">Menu</h3>
-          <ul className="mt-5 space-y-2.5">
+          <h3 className="text-base font-black" style={{ color: TERRA, fontFamily: HAND }}>
+            メニュー
+          </h3>
+          <ul className="mt-4 space-y-2.5">
             {nav.map((n) => (
               <li key={n.href}>
-                <Link href={n.href} className="text-paper/80 transition hover:text-paper">
+                <Link href={n.href} className="font-bold transition-colors hover:text-[#F0851F]" style={{ color: INK }}>
                   {n.label}
                 </Link>
               </li>
@@ -56,21 +71,23 @@ export function Footer() {
         </div>
 
         <div>
-          <h3 className="label text-honey-300">Access</h3>
-          <ul className="mt-5 space-y-2.5 text-paper/80">
-            <li>{site.address}</li>
-            <li className="text-sm text-paper/60">ご予約：LINE・フォームから</li>
+          <h3 className="text-base font-black" style={{ color: TERRA, fontFamily: HAND }}>
+            アクセス
+          </h3>
+          <ul className="mt-4 space-y-2.5" style={{ color: `${INK}dd` }}>
+            <li className="font-bold">{site.address}</li>
+            <li className="text-sm">ご予約：LINE・フォームから</li>
             {site.hours.map((h) => (
-              <li key={h.day} className="text-sm text-paper/60">
+              <li key={h.day} className="text-sm">
                 {h.day}　{h.time}
               </li>
             ))}
           </ul>
         </div>
       </div>
-      <div className="border-t border-paper/10">
-        <p className="mx-auto max-w-6xl px-6 py-5 font-mono text-[11px] tracking-wider text-paper/45 md:px-8">
-          © {new Date().getFullYear()} {site.name} — Kumamoto. All rights reserved.
+      <div className="border-t" style={{ borderColor: `${INK}22` }}>
+        <p className="mx-auto max-w-6xl px-5 py-5 text-xs md:px-8" style={{ color: `${INK}99` }}>
+          © {new Date().getFullYear()} {site.name} — 熊本市中央区壺川. All rights reserved.
         </p>
       </div>
     </footer>

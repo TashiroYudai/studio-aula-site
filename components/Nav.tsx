@@ -3,9 +3,15 @@
 import Link from "next/link";
 import { useState } from "react";
 import { nav, site } from "@/lib/site";
-import { Sprout } from "@/components/Sprout";
 
 const SIZES = ["", "text-lg", "text-xl"] as const;
+
+const CREAM = "#FBF3DC";
+const SUN = "#F0851F";
+const TERRA = "#C0492A";
+const INK = "#4A2E18";
+const HAND = '"Yomogi", "Zen Maru Gothic", cursive';
+const BODY = '"Zen Maru Gothic", system-ui, sans-serif';
 
 export function Nav() {
   const [open, setOpen] = useState(false);
@@ -20,28 +26,33 @@ export function Nav() {
   }
 
   return (
-    <header className="sticky top-0 z-50 border-b border-line bg-paper/85 backdrop-blur-md">
+    <header
+      className="sticky top-0 z-50 border-b-2 border-dashed backdrop-blur-md"
+      style={{ borderColor: `${INK}33`, background: `${CREAM}f0`, color: INK, fontFamily: BODY }}
+    >
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-3 md:px-8">
         {/* ロゴ */}
         <Link href="/" className="flex items-center gap-2.5" aria-label={site.name}>
-          <span className="grid h-10 w-10 place-items-center rounded-full bg-pine-600 text-card">
-            <Sprout className="h-5 w-5" />
+          <span
+            aria-hidden="true"
+            className="grid h-10 w-10 place-items-center rounded-full text-xl font-black"
+            style={{ background: TERRA, color: CREAM, transform: "rotate(-4deg)", fontFamily: HAND }}
+          >
+            A
           </span>
-          <span className="flex flex-col leading-none">
-            <span className="font-display text-xl font-bold tracking-wide text-ink">
-              {site.name}
-            </span>
-            <span className="label mt-1 text-[9px]">studio of the body</span>
+          <span className="text-2xl leading-none" style={{ fontFamily: HAND, color: INK }}>
+            studio Aula
           </span>
         </Link>
 
         {/* PC ナビ */}
-        <nav className="hidden items-center gap-0.5 lg:flex">
+        <nav className="hidden items-center gap-1 lg:flex">
           {nav.map((n) => (
             <Link
               key={n.href}
               href={n.href}
-              className="rounded-full px-4 py-2.5 text-[15px] font-medium text-ink/75 transition hover:bg-pine-50 hover:text-pine-700"
+              className="rounded-md px-3.5 py-2.5 text-[15px] font-bold transition-colors hover:bg-[#F0851F22]"
+              style={{ color: INK }}
             >
               {n.label}
             </Link>
@@ -51,24 +62,26 @@ export function Nav() {
         <div className="flex items-center gap-2">
           <button
             onClick={cycleSize}
-            className="hidden items-baseline gap-0.5 rounded-full border border-line bg-card px-3 py-2 text-sub transition hover:border-pine-300 hover:text-pine-700 sm:flex"
+            className="hidden items-baseline gap-0.5 rounded-md border-2 px-3 py-2 font-bold transition-transform hover:-translate-y-0.5 sm:flex"
+            style={{ borderColor: `${INK}33`, color: INK, background: "#fff" }}
             aria-label="文字サイズを変える"
           >
-            <span className="text-xs font-bold">あ</span>
-            <span className="text-base font-bold">あ</span>
+            <span className="text-xs">あ</span>
+            <span className="text-base">あ</span>
           </button>
 
           <Link
             href="/contact"
-            className="hidden rounded-full bg-pine-600 px-5 py-3 text-[15px] font-bold text-card shadow-soft transition hover:bg-pine-700 md:inline-block"
+            className="hidden rounded-md px-5 py-3 text-[15px] font-bold text-white shadow-[0_10px_18px_-10px_rgba(240,133,31,1)] transition-transform hover:-translate-y-0.5 md:inline-block"
+            style={{ background: SUN, transform: "rotate(-1.5deg)" }}
           >
             体験申込
           </Link>
 
-          {/* モバイル ハンバーガー */}
           <button
             onClick={() => setOpen((o) => !o)}
-            className="grid h-11 w-11 place-items-center rounded-full border border-line bg-card text-ink lg:hidden"
+            className="grid h-11 w-11 place-items-center rounded-md border-2 lg:hidden"
+            style={{ borderColor: `${INK}33`, color: INK, background: "#fff" }}
             aria-label={open ? "メニューを閉じる" : "メニューを開く"}
             aria-expanded={open}
           >
@@ -79,14 +92,15 @@ export function Nav() {
 
       {/* モバイル メニュー */}
       {open && (
-        <div className="border-t border-line bg-paper lg:hidden">
+        <div className="border-t-2 border-dashed lg:hidden" style={{ borderColor: `${INK}33`, background: CREAM }}>
           <nav className="mx-auto flex max-w-6xl flex-col gap-1 px-5 py-4">
             {nav.map((n) => (
               <Link
                 key={n.href}
                 href={n.href}
                 onClick={() => setOpen(false)}
-                className="rounded-card px-4 py-4 text-lg font-medium text-ink transition hover:bg-pine-50"
+                className="rounded-md px-4 py-4 text-lg font-bold"
+                style={{ color: INK }}
               >
                 {n.label}
               </Link>
@@ -95,13 +109,15 @@ export function Nav() {
               <Link
                 href="/contact"
                 onClick={() => setOpen(false)}
-                className="flex-1 rounded-full bg-pine-600 px-5 py-4 text-center text-lg font-bold text-card shadow-soft"
+                className="flex-1 rounded-md px-5 py-4 text-center text-lg font-bold text-white"
+                style={{ background: SUN }}
               >
                 体験を申し込む
               </Link>
               <button
                 onClick={cycleSize}
-                className="grid h-14 w-14 shrink-0 place-items-center rounded-full border border-line bg-card font-bold text-sub"
+                className="grid h-14 w-14 shrink-0 place-items-center rounded-md border-2 font-bold"
+                style={{ borderColor: `${INK}33`, color: INK, background: "#fff" }}
                 aria-label="文字サイズを変える"
               >
                 <span className="text-sm">あ</span>
