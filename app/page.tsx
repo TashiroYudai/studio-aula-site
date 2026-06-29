@@ -120,10 +120,10 @@ export default function Home() {
       }}
     >
       {/* ───────────────────── ① HERO ＝ ノートの見開き ───────────────────── */}
-      <section className="relative mx-auto max-w-6xl px-5 pb-14 pt-10 md:px-8 md:pb-20 md:pt-16" aria-labelledby="hero-heading">
+      <section className="relative mx-auto max-w-6xl px-5 pb-14 pt-5 md:px-8 md:pb-20 md:pt-16" aria-labelledby="hero-heading">
         <div className="grid items-center gap-10 md:grid-cols-[1.05fr_0.95fr]">
-          {/* 左：手書きコピー（テキストは常に水平） */}
-          <div className="relative">
+          {/* 左：手書きコピー（スマホでは画面いっぱいの高さに。テキストは常に水平） */}
+          <div className="relative flex min-h-[calc(100svh-96px)] flex-col justify-center md:block md:min-h-0">
             <p className="mb-4 text-lg md:text-xl" style={{ fontFamily: FONT_HAND }}>
               そのお悩み{" "}
               <span style={{ color: LEAF }} className="hand-bold">
@@ -137,7 +137,7 @@ export default function Home() {
                 <span className="relative inline-block">
                   自分
                   <svg
-                    className="pointer-events-none absolute -inset-x-3 -inset-y-2"
+                    className="pointer-events-none absolute -inset-x-3 -top-0.5 -bottom-3.5"
                     viewBox="0 0 160 90"
                     fill="none"
                     aria-hidden="true"
@@ -167,9 +167,10 @@ export default function Home() {
             </p>
 
             <div className="mt-8 flex flex-wrap items-center gap-3">
+              {/* 体験/LINE はスマホでは下部固定バーにあるため非表示（PCのみ表示） */}
               <Link
                 href="/contact"
-                className="rounded-md px-6 py-3.5 text-lg font-bold text-white shadow-[0_14px_26px_-12px_rgba(240,133,31,1)] transition-transform hover:-translate-y-0.5"
+                className="hidden rounded-md px-6 py-3.5 text-lg font-bold text-white shadow-[0_14px_26px_-12px_rgba(240,133,31,1)] transition-transform hover:-translate-y-0.5 lg:inline-block"
                 style={{ background: SUN, transform: "rotate(-1.8deg)" }}
               >
                 体験を申し込む
@@ -183,7 +184,7 @@ export default function Home() {
               </Link>
               <Link
                 href="/contact"
-                className="rounded-md px-5 py-3 text-base font-bold text-white transition-transform hover:-translate-y-0.5"
+                className="hidden rounded-md px-5 py-3 text-base font-bold text-white transition-transform hover:-translate-y-0.5 lg:inline-block"
                 style={{ background: "#06C755", transform: "rotate(-0.8deg)" }}
               >
                 LINEで相談
