@@ -11,7 +11,7 @@ const BODY = '"Zen Maru Gothic", system-ui, sans-serif';
 export function Footer() {
   return (
     <footer className="w-full border-t-2 border-dashed" style={{ borderColor: `${INK}33`, background: CREAM, color: INK, fontFamily: BODY }}>
-      <div className="mx-auto grid max-w-6xl gap-10 px-5 py-14 md:grid-cols-[1.4fr_1fr_1fr] md:px-8">
+      <div className="mx-auto grid max-w-6xl grid-cols-1 gap-10 px-5 py-14 md:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)_minmax(0,1fr)] md:px-8">
         <div>
           <div className="flex items-center gap-2.5">
             <span

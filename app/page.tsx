@@ -133,7 +133,7 @@ export default function Home() {
             </p>
 
             <h1 id="hero-heading" className="relative leading-[1.08]">
-              <span className="block text-[13vw] sm:text-6xl md:text-7xl" style={{ fontFamily: FONT_DISPLAY, color: INK }}>
+              <span className="block text-[10.5vw] sm:text-6xl md:text-7xl" style={{ fontFamily: FONT_DISPLAY, color: INK }}>
                 <span className="relative inline-block">
                   自分
                   <svg
@@ -156,13 +156,14 @@ export default function Home() {
                 </span>
                 のカラダは
               </span>
-              <span className="block text-[13vw] sm:text-6xl md:text-7xl" style={{ fontFamily: FONT_DISPLAY, color: SUN }}>
+              <span className="block text-[10.5vw] sm:text-6xl md:text-7xl" style={{ fontFamily: FONT_DISPLAY, color: SUN }}>
                 自分次第
               </span>
             </h1>
 
             <p className="mt-6 text-xl font-bold md:text-2xl" style={{ color: INK }}>
-              <span className="marker">『私を育てる』</span>トレーニングスタジオ
+              <span className="marker">『私を育てる』</span>
+              <span className="inline-block">トレーニングスタジオ</span>
             </p>
 
             <div className="mt-8 flex flex-wrap items-center gap-3">
@@ -232,8 +233,8 @@ export default function Home() {
           <Sticky rotate="-4deg" className="absolute -left-3 -top-5">
             相談メモ
           </Sticky>
-          <h2 id="concern-heading" className="text-2xl font-black md:text-3xl" style={{ color: INK }}>
-            こんなこと、ありませんか？
+          <h2 id="concern-heading" className="text-xl font-black md:text-3xl" style={{ color: INK }}>
+            こんなこと、<br className="sm:hidden" />ありませんか？
           </h2>
 
           <div className="mt-6 grid gap-6 sm:grid-cols-2">
@@ -293,7 +294,7 @@ export default function Home() {
           <p className="text-base font-bold" style={{ color: "#FFE9CF", fontFamily: FONT_HAND }}>
             キッズも、大人も、シニアも。
           </p>
-          <h2 id="gen-heading" className="mt-1 text-2xl font-black text-white md:text-4xl" style={{ fontFamily: FONT_DISPLAY }}>
+          <h2 id="gen-heading" className="mt-1 text-xl font-black text-white md:text-4xl" style={{ fontFamily: FONT_DISPLAY }}>
             家族みんなで通えるスタジオ
           </h2>
 
@@ -428,7 +429,7 @@ export default function Home() {
 
       {/* ─────────────── なぜ選ばれる（features）＝メモの箇条書き ─────────────── */}
       <section className="mx-auto max-w-5xl px-5 py-14 md:px-8 md:py-16" aria-labelledby="why-heading">
-        <h2 id="why-heading" className="mb-8 text-2xl font-black md:text-3xl" style={{ color: INK, fontFamily: FONT_DISPLAY }}>
+        <h2 id="why-heading" className="mb-8 text-xl font-black md:text-3xl" style={{ color: INK, fontFamily: FONT_DISPLAY }}>
           Aula が大切にしていること
         </h2>
         <ul className="space-y-5">
@@ -467,7 +468,7 @@ export default function Home() {
           <p className="text-lg font-bold" style={{ color: "#FFE9CF", fontFamily: FONT_HAND }}>
             考えるより、まず一歩。
           </p>
-          <h2 id="cta-heading" className="mt-2 text-4xl font-black text-white md:text-6xl" style={{ fontFamily: FONT_DISPLAY }}>
+          <h2 id="cta-heading" className="mt-2 text-3xl font-black text-white md:text-6xl" style={{ fontFamily: FONT_DISPLAY }}>
             まずは、体験から。
           </h2>
           <div className="mt-9 flex flex-wrap items-center justify-center gap-4">
