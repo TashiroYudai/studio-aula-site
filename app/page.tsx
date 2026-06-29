@@ -120,11 +120,13 @@ export default function Home() {
       }}
     >
       {/* ───────────────────── ① HERO ＝ ノートの見開き ───────────────────── */}
-      <section className="relative mx-auto max-w-6xl px-5 pb-14 pt-5 md:px-8 md:pb-20 md:pt-16" aria-labelledby="hero-heading">
+      <section className="relative mx-auto max-w-6xl px-5 pb-14 pt-3 md:px-8 md:pb-20 md:pt-16" aria-labelledby="hero-heading">
         <div className="grid items-center gap-10 md:grid-cols-[1.05fr_0.95fr]">
-          {/* 左：手書きコピー（スマホでは画面いっぱいの高さに。テキストは常に水平） */}
-          <div className="relative flex min-h-[calc(100svh-96px)] flex-col justify-center md:block md:min-h-0">
-            <p className="mb-4 text-lg md:text-xl" style={{ fontFamily: FONT_HAND }}>
+          {/* 左：手書きコピー。スマホは画面いっぱいに、メッセージ＝上／アクション＝下で配分（テキストは常に水平） */}
+          <div className="relative flex min-h-[calc(100svh-168px)] flex-col justify-between md:block md:min-h-0">
+            {/* メッセージ群（上） */}
+            <div className="md:contents">
+            <p className="mb-4 text-xl" style={{ fontFamily: FONT_HAND }}>
               そのお悩み{" "}
               <span style={{ color: LEAF }} className="hand-bold">
                 身体のクセ
@@ -133,7 +135,7 @@ export default function Home() {
             </p>
 
             <h1 id="hero-heading" className="relative leading-[1.08]">
-              <span className="block text-[10.5vw] sm:text-6xl md:text-7xl" style={{ fontFamily: FONT_DISPLAY, color: INK }}>
+              <span className="block text-[12vw] sm:text-6xl md:text-7xl" style={{ fontFamily: FONT_DISPLAY, color: INK }}>
                 <span className="relative inline-block">
                   自分
                   <svg
@@ -156,7 +158,7 @@ export default function Home() {
                 </span>
                 のカラダは
               </span>
-              <span className="block text-[10.5vw] sm:text-6xl md:text-7xl" style={{ fontFamily: FONT_DISPLAY, color: SUN }}>
+              <span className="block text-[12vw] sm:text-6xl md:text-7xl" style={{ fontFamily: FONT_DISPLAY, color: SUN }}>
                 自分次第
               </span>
             </h1>
@@ -166,7 +168,11 @@ export default function Home() {
               <span className="inline-block">トレーニングスタジオ</span>
             </p>
 
-            <div className="mt-8 flex flex-wrap items-center gap-3">
+            </div>
+
+            {/* アクション群（下） */}
+            <div className="md:contents">
+            <div className="mt-0 flex flex-wrap items-center gap-3 md:mt-8">
               {/* 体験/LINE はスマホでは下部固定バーにあるため非表示（PCのみ表示） */}
               <Link
                 href="/contact"
@@ -191,9 +197,10 @@ export default function Home() {
               </Link>
             </div>
 
-            <p className="mt-7 text-3xl" style={{ fontFamily: FONT_HAND, color: TERRA, transform: "rotate(-3deg)", transformOrigin: "left" }}>
+            <p className="mt-6 text-3xl md:mt-7" style={{ fontFamily: FONT_HAND, color: TERRA, transform: "rotate(-3deg)", transformOrigin: "left" }}>
               ✎ studio Aula
             </p>
+            </div>
           </div>
 
           {/* 右：傾いた写真スナップ＋マステ＋付箋＋矢印注釈 */}
