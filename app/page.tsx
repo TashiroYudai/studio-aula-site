@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { lessons, features, testimonials, concerns } from "@/lib/site";
+import { Reveal } from "@/components/Reveal";
+import { Scribble } from "@/components/Scribble";
 
 /* ──────────────────────────────────────────────────────────────────────────
    Studio Aula — トップページ「陽だまりのスクラップブック — 育てるノート」
@@ -262,30 +264,32 @@ export default function Home() {
               <p className="mb-3 text-base font-bold" style={{ color: TERRA, fontFamily: FONT_HAND }}>
                 ◯ こんなお悩み
               </p>
-              <ul className="flex flex-wrap gap-3">
-                {concerns.troubles.map((t) => (
+              <Reveal as="ul" className="flex flex-wrap gap-3">
+                {concerns.troubles.map((t, i) => (
                   <li key={t} className="relative px-2 py-2 text-lg font-black" style={{ color: INK }}>
                     {t}
                     <svg className="pointer-events-none absolute -inset-1.5" viewBox="0 0 100 56" fill="none" aria-hidden="true" preserveAspectRatio="none">
                       <path
-                        className="annot-line"
+                        className="draw"
                         d="M50 5 C82 4 97 16 96 28 C95 44 72 51 49 51 C26 51 4 44 4 28 C4 15 24 6 50 5"
                         stroke={TERRA}
                         strokeWidth={3}
                         strokeLinecap="round"
                         // @ts-expect-error CSS custom props
-                        style={{ "--len": 280, "--delay": "0.3s" }}
+                        style={{ "--len": 280, "--delay": `${0.15 + i * 0.18}s` }}
                       />
                     </svg>
                   </li>
                 ))}
-              </ul>
+              </Reveal>
             </div>
           </div>
 
-          <p className="mt-6 text-base md:text-lg" style={{ color: INK }}>
-            …もちろん、ぜんぶ大丈夫。まずは <span className="marker font-bold">あなたの体のクセ</span> を一緒に見つけるところから。
-          </p>
+          <Reveal className="mt-6">
+            <p className="text-base md:text-lg" style={{ color: INK }}>
+              …もちろん、ぜんぶ大丈夫。まずは <span className="marker font-bold">あなたの体のクセ</span> を一緒に見つけるところから。
+            </p>
+          </Reveal>
           <Link
             href="/contact"
             className="mt-5 inline-block rounded-md px-5 py-3 text-base font-bold text-white transition-transform hover:-translate-y-0.5"
@@ -302,11 +306,14 @@ export default function Home() {
           <p className="text-base font-bold" style={{ color: "#FFE9CF", fontFamily: FONT_HAND }}>
             キッズも、大人も、シニアも。
           </p>
-          <h2 id="gen-heading" className="mt-1 text-xl font-black text-white md:text-4xl" style={{ fontFamily: FONT_DISPLAY }}>
-            家族みんなで通えるスタジオ
-          </h2>
+          <Reveal className="relative mt-1 inline-block">
+            <h2 id="gen-heading" className="text-xl font-black text-white md:text-4xl" style={{ fontFamily: FONT_DISPLAY }}>
+              家族みんなで通えるスタジオ
+            </h2>
+            <Scribble className="absolute -bottom-2 left-0 h-2.5 w-full" color="#FFE3C2" delay="0.15s" />
+          </Reveal>
 
-          <div className="relative mt-8 flex flex-wrap items-start justify-center gap-x-2 gap-y-8 sm:justify-start">
+          <Reveal className="reveal-stagger relative mt-8 flex flex-wrap items-start justify-center gap-x-2 gap-y-8 sm:justify-start">
             {[
               { label: "キッズ", img: lessons[1].image },
               { label: "大人", img: lessons[2].image },
@@ -326,7 +333,7 @@ export default function Home() {
                 </figcaption>
               </figure>
             ))}
-          </div>
+          </Reveal>
           <p className="mt-6 text-base font-bold text-white sm:hidden" style={{ fontFamily: FONT_HAND }}>
             → 3世代が同じ場所で。
           </p>
@@ -336,15 +343,18 @@ export default function Home() {
       {/* ────────────── ④ 4つのレッスン ＝ ノートに貼った“ポラ写真” ────────────── */}
       <section className="mx-auto max-w-6xl px-5 py-14 md:px-8 md:py-20" aria-labelledby="lessons-heading">
         <div className="mb-10 flex items-end justify-between">
-          <h2 id="lessons-heading" className="text-2xl font-black md:text-4xl" style={{ color: INK, fontFamily: FONT_DISPLAY }}>
-            4つのレッスン
-          </h2>
+          <Reveal className="relative">
+            <h2 id="lessons-heading" className="text-2xl font-black md:text-4xl" style={{ color: INK, fontFamily: FONT_DISPLAY }}>
+              4つのレッスン
+            </h2>
+            <Scribble className="absolute -bottom-2 left-0 h-2.5 w-full" delay="0.1s" />
+          </Reveal>
           <Sticky rotate="3deg" className="hidden sm:inline-block">
             貼ってみた
           </Sticky>
         </div>
 
-        <div className="grid gap-x-8 gap-y-14 sm:grid-cols-2 lg:grid-cols-4">
+        <Reveal className="reveal-stagger grid gap-x-8 gap-y-14 sm:grid-cols-2 lg:grid-cols-4">
           {lessons.map((l, i) => (
             <article
               key={l.id}
@@ -376,7 +386,7 @@ export default function Home() {
               </Link>
             </article>
           ))}
-        </div>
+        </Reveal>
 
         <div className="relative mt-16 flex flex-col items-center text-center">
           <p className="text-lg font-bold" style={{ color: INK }}>
@@ -402,11 +412,14 @@ export default function Home() {
       {/* ───────────── ⑤ お客様の声 ＝ 壁に貼った付箋3色 ───────────── */}
       <section className="relative w-full py-14 md:py-20" style={{ background: "#FCE7C0" }} aria-labelledby="voice-heading">
         <div className="mx-auto max-w-6xl px-5 md:px-8">
-          <h2 id="voice-heading" className="mb-10 text-2xl font-black md:text-4xl" style={{ color: INK, fontFamily: FONT_DISPLAY }}>
-            通っている方の声
-          </h2>
+          <Reveal className="relative mb-10 inline-block">
+            <h2 id="voice-heading" className="text-2xl font-black md:text-4xl" style={{ color: INK, fontFamily: FONT_DISPLAY }}>
+              通っている方の声
+            </h2>
+            <Scribble className="absolute -bottom-2 left-0 h-2.5 w-full" delay="0.1s" />
+          </Reveal>
 
-          <ul className="grid gap-8 sm:grid-cols-3">
+          <Reveal as="ul" className="reveal-stagger grid gap-8 sm:grid-cols-3">
             {testimonials.map((t, i) => {
               const bg = [MUSTARD + "dd", "#F5B0A0", "#FFD27A"][i % 3];
               return (
@@ -428,7 +441,7 @@ export default function Home() {
                 </li>
               );
             })}
-          </ul>
+          </Reveal>
           <p className="mt-6 text-sm" style={{ color: INK }}>
             ※ 掲載は一例です（実際にいただいた声に差し替え予定）。
           </p>
@@ -437,10 +450,13 @@ export default function Home() {
 
       {/* ─────────────── なぜ選ばれる（features）＝メモの箇条書き ─────────────── */}
       <section className="mx-auto max-w-5xl px-5 py-14 md:px-8 md:py-16" aria-labelledby="why-heading">
-        <h2 id="why-heading" className="mb-8 text-xl font-black md:text-3xl" style={{ color: INK, fontFamily: FONT_DISPLAY }}>
-          Aula が大切にしていること
-        </h2>
-        <ul className="space-y-5">
+        <Reveal className="relative mb-8 inline-block">
+          <h2 id="why-heading" className="text-xl font-black md:text-3xl" style={{ color: INK, fontFamily: FONT_DISPLAY }}>
+            Aula が大切にしていること
+          </h2>
+          <Scribble className="absolute -bottom-2 left-0 h-2.5 w-full" delay="0.1s" />
+        </Reveal>
+        <Reveal as="ul" className="space-y-5">
           {features.map((f, i) => (
             <li key={f.title} className="flex gap-4" style={{ transform: `rotate(${i % 2 ? "0.5deg" : "-0.5deg"})` }}>
               <span
@@ -460,7 +476,7 @@ export default function Home() {
               </div>
             </li>
           ))}
-        </ul>
+        </Reveal>
       </section>
 
       {/* ──────────────────────── ⑥ CTA バンド（オレンジ全面） ──────────────────────── */}

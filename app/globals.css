@@ -63,6 +63,7 @@ body {
 .marker {
   background-image: linear-gradient(transparent 62%, rgba(233, 180, 90, 0.55) 62%);
   background-repeat: no-repeat;
+  background-size: 100% 100%;
 }
 
 /* ── 署名：余白の書き込み（ヒーローの注釈線） ── */
@@ -104,6 +105,69 @@ body {
   100% {
     transform: scale(1.9);
     opacity: 0;
+  }
+}
+
+/* ── スクロールで現れる手描きアニメーション ──
+   既定（JS無効 / reduced-motion）は最終状態を表示。
+   実際の発火は html.js（JS有効）＋ motion許可時のみ。 */
+.draw {
+  stroke-dasharray: var(--len, 340);
+  stroke-dashoffset: 0;
+}
+.reveal-stagger > * {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  /* 手描きストロークの描き起こし */
+  html.js .reveal .draw {
+    stroke-dashoffset: var(--len, 340);
+  }
+  html.js .reveal.in .draw {
+    animation: annot-draw 0.85s cubic-bezier(0.4, 0.5, 0.2, 1) var(--delay, 0s) forwards;
+  }
+  /* マーカーを左→右にスッと塗る */
+  html.js .reveal .marker {
+    background-size: 0% 100%;
+  }
+  html.js .reveal.in .marker {
+    animation: marker-wipe 0.6s ease-out var(--delay, 0.12s) forwards;
+  }
+  /* 紙片がふわっと現れる（translateプロパティで傾きと非干渉・stagger） */
+  html.js .reveal-stagger:not(.in) > * {
+    opacity: 0;
+    translate: 0 18px;
+  }
+  html.js .reveal-stagger.in > * {
+    animation: soft-rise 0.6s cubic-bezier(0.2, 0.7, 0.3, 1) both;
+  }
+  html.js .reveal-stagger.in > *:nth-child(2) {
+    animation-delay: 0.08s;
+  }
+  html.js .reveal-stagger.in > *:nth-child(3) {
+    animation-delay: 0.16s;
+  }
+  html.js .reveal-stagger.in > *:nth-child(4) {
+    animation-delay: 0.24s;
+  }
+}
+@keyframes marker-wipe {
+  from {
+    background-size: 0% 100%;
+  }
+  to {
+    background-size: 100% 100%;
+  }
+}
+@keyframes soft-rise {
+  from {
+    opacity: 0;
+    translate: 0 18px;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
   }
 }
 

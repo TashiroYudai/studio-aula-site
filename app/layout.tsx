@@ -19,6 +19,12 @@ export default function RootLayout({
   return (
     <html lang="ja">
       <head>
+        {/* JS有効時のみ手描きアニメの初期非表示を有効化（無効でも崩れない） */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: "document.documentElement.classList.add('js')",
+          }}
+        />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link
           rel="preconnect"
