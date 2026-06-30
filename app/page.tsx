@@ -24,52 +24,6 @@ const FONT_HAND = '"Yomogi", "Zen Maru Gothic", cursive';
 // 紙片の傾き（-2.5°〜+2° の小角度に固定）
 const TILT = ["-2.5deg", "1.6deg", "-1.4deg", "2deg", "-2deg", "1.2deg"];
 
-/* 朱の手描き矢印（SVG）。.annot-line で描き起こし、reduced-motion では即時表示。 */
-function HandArrow({
-  className = "",
-  delay = "0.5s",
-  d,
-  len,
-  flip = false,
-}: {
-  className?: string;
-  delay?: string;
-  d: string;
-  len: number;
-  flip?: boolean;
-}) {
-  return (
-    <svg
-      className={`pointer-events-none absolute hidden sm:block ${className}`}
-      viewBox="0 0 120 80"
-      fill="none"
-      aria-hidden="true"
-      style={{ transform: flip ? "scaleX(-1)" : undefined }}
-    >
-      <path
-        className="annot-line"
-        d={d}
-        stroke={TERRA}
-        strokeWidth={3.2}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        // @ts-expect-error CSS custom props
-        style={{ "--len": len, "--delay": delay }}
-      />
-      <path
-        className="annot-line"
-        d="M104 50 l12 4 l-8 9"
-        stroke={TERRA}
-        strokeWidth={3.2}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        // @ts-expect-error CSS custom props
-        style={{ "--len": 26, "--delay": `calc(${delay} + 0.35s)` }}
-      />
-    </svg>
-  );
-}
-
 // マスキングテープ（半透明マスタード）
 function Tape({ className = "", rotate = "-6deg" }: { className?: string; rotate?: string }) {
   return (
@@ -138,27 +92,7 @@ export default function Home() {
 
             <h1 id="hero-heading" className="relative leading-[1.08]">
               <span className="block text-[12vw] sm:text-6xl md:text-7xl" style={{ fontFamily: FONT_DISPLAY, color: INK }}>
-                <span className="relative inline-block">
-                  自分
-                  <svg
-                    className="pointer-events-none absolute -inset-x-3 -top-0.5 -bottom-3.5"
-                    viewBox="0 0 160 90"
-                    fill="none"
-                    aria-hidden="true"
-                    preserveAspectRatio="none"
-                  >
-                    <path
-                      className="annot-line"
-                      d="M80 8 C128 6 156 26 154 46 C152 70 116 84 78 84 C40 84 6 70 6 46 C6 24 36 10 80 8"
-                      stroke={TERRA}
-                      strokeWidth={4}
-                      strokeLinecap="round"
-                      // @ts-expect-error CSS custom props
-                      style={{ "--len": 420, "--delay": "0.55s" }}
-                    />
-                  </svg>
-                </span>
-                のカラダは
+                自分のカラダは
               </span>
               <span className="block text-[12vw] sm:text-6xl md:text-7xl" style={{ fontFamily: FONT_DISPLAY, color: SUN }}>
                 自分次第
@@ -225,11 +159,6 @@ export default function Home() {
                 膝・歩行
               </Sticky>
             </div>
-
-            <HandArrow className="-left-10 top-10 h-20 w-32" d="M6 8 C40 22 70 30 100 46" len={150} delay="0.7s" />
-            <p className="absolute -left-6 top-2 hidden text-lg sm:block" style={{ fontFamily: FONT_HAND, color: TERRA }} aria-hidden="true">
-              ここが整う
-            </p>
           </div>
         </div>
       </section>
@@ -264,24 +193,13 @@ export default function Home() {
               <p className="mb-3 text-base font-bold" style={{ color: TERRA, fontFamily: FONT_HAND }}>
                 ◯ こんなお悩み
               </p>
-              <Reveal as="ul" className="flex flex-wrap gap-3">
-                {concerns.troubles.map((t, i) => (
-                  <li key={t} className="relative px-2 py-2 text-lg font-black" style={{ color: INK }}>
+              <ul className="flex flex-wrap gap-3">
+                {concerns.troubles.map((t) => (
+                  <li key={t} className="px-2 py-2 text-lg font-black" style={{ color: INK }}>
                     {t}
-                    <svg className="pointer-events-none absolute -inset-1.5" viewBox="0 0 100 56" fill="none" aria-hidden="true" preserveAspectRatio="none">
-                      <path
-                        className="draw"
-                        d="M50 5 C82 4 97 16 96 28 C95 44 72 51 49 51 C26 51 4 44 4 28 C4 15 24 6 50 5"
-                        stroke={TERRA}
-                        strokeWidth={3}
-                        strokeLinecap="round"
-                        // @ts-expect-error CSS custom props
-                        style={{ "--len": 280, "--delay": `${0.15 + i * 0.18}s` }}
-                      />
-                    </svg>
                   </li>
                 ))}
-              </Reveal>
+              </ul>
             </div>
           </div>
 
@@ -392,16 +310,12 @@ export default function Home() {
           <p className="text-lg font-bold" style={{ color: INK }}>
             グループレッスンは
           </p>
-          <p className="relative inline-block text-[15vw] leading-none sm:text-7xl" style={{ fontFamily: FONT_DISPLAY, color: TERRA }}>
+          <p className="text-[15vw] leading-none sm:text-7xl" style={{ fontFamily: FONT_DISPLAY, color: TERRA }}>
             500
             <span className="text-3xl">円</span>
-            <HandArrow className="-right-36 top-2 h-20 w-32" d="M6 8 C40 24 72 34 100 48" len={150} delay="0.4s" flip />
-            <span className="absolute -right-40 top-6 hidden whitespace-nowrap text-xl sm:block" style={{ fontFamily: FONT_HAND, color: SUN }} aria-hidden="true">
-              1回ワンコイン！
-            </span>
           </p>
-          <p className="mt-2 text-lg font-bold sm:hidden" style={{ fontFamily: FONT_HAND, color: SUN }}>
-            → 1回ワンコイン！
+          <p className="mt-2 text-lg font-bold" style={{ fontFamily: FONT_HAND, color: SUN }}>
+            1回ワンコイン！
           </p>
           <p className="mt-2 text-sm" style={{ color: INK }}>
             （パーソナルは 1回 2,500円・エアコン使用日は +100円）
