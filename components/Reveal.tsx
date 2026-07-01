@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 
 /**
  * 子要素がビューポートに入ったら自身に `in` クラスを付与する薄いラッパー。
@@ -11,12 +11,10 @@ export function Reveal({
   children,
   className = "",
   as: Tag = "div",
-  style,
 }: {
   children: ReactNode;
   className?: string;
   as?: "div" | "ul" | "section";
-  style?: CSSProperties;
 }) {
   const ref = useRef<HTMLElement>(null);
   const [inView, setInView] = useState(false);
@@ -48,7 +46,6 @@ export function Reveal({
     <Tag
       ref={ref as never}
       className={`reveal ${inView ? "in" : ""} ${className}`}
-      style={style}
     >
       {children}
     </Tag>

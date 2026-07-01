@@ -40,7 +40,7 @@ export const generations: {
     lead: "正しい姿勢と体幹を育て、運動能力の土台をつくります。",
     points: ["正しい姿勢づくり", "体幹・バランス強化", "運動能力の向上"],
     image:
-      "https://images.unsplash.com/photo-1543807535-eceef0bc6599?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1526676037777-05a232554f77?auto=format&fit=crop&w=900&q=80",
   },
   {
     id: "adult",
@@ -150,8 +150,7 @@ export const instagram = "https://www.instagram.com/aula.kumamo";
 
 // LINE公式アカウント @sim5277r（申し込み・お問い合わせ）
 export const line = {
-  // GitHub Pages のサブパス配信でも 404 しないよう basePath を前置（ローカルは空）
-  qr: (process.env.NEXT_PUBLIC_BASE_PATH || "") + "/line-qr.png",
+  qr: "/line-qr.png",
   url: "https://line.me/R/ti/p/@sim5277r",
 };
 
@@ -202,37 +201,6 @@ export const concerns = {
   goals: ["体力アップ", "筋力アップ", "ダイエット"],
   troubles: ["肩こり", "腰痛", "膝痛"],
 };
-
-// ヒーローのスクロール診断（肩こり→腰痛→膝痛を順に解説）
-export const concernDetails: {
-  key: "shoulder" | "waist" | "knee";
-  label: string;
-  region: string;
-  body: string; // お悩みの説明
-  aula: string; // Aula ではどうするか
-}[] = [
-  {
-    key: "shoulder",
-    label: "肩こり",
-    region: "肩・首",
-    body: "長時間のデスクワークや姿勢のクセで、肩・首まわりがこわばり、血流が滞りがちに。",
-    aula: "体のしくみを知り、正しい動かし方とストレッチで根本からゆるめていきます。",
-  },
-  {
-    key: "waist",
-    label: "腰痛",
-    region: "腰・体幹",
-    body: "体幹の使い方のクセや筋力不足で、腰の一点に負担が集中しているのかもしれません。",
-    aula: "マンツーマンで体幹の使い方を再学習。あなたのクセに合わせて負担を減らします。",
-  },
-  {
-    key: "knee",
-    label: "膝痛",
-    region: "ひざ・歩行",
-    body: "歩き方や脚のバランスのクセが、膝への負担につながっていることがあります。",
-    aula: "歩行と下半身の安定づくりで、10年後も自分の足で歩ける体を目指します。",
-  },
-];
 
 export const features = [
   {
