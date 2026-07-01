@@ -62,8 +62,6 @@ function Sticky({
 }
 
 export default function Home() {
-  const heroPhoto = lessons[0].image;
-
   return (
     <div
       className="w-full overflow-x-hidden"
@@ -77,85 +75,88 @@ export default function Home() {
     >
       {/* ───────────────────── ① HERO ＝ ノートの見開き ───────────────────── */}
       <section className="relative mx-auto max-w-6xl px-5 pb-14 pt-3 md:px-8 md:pb-20 md:pt-16" aria-labelledby="hero-heading">
-        <div className="grid items-center gap-10 md:grid-cols-[1.05fr_0.95fr]">
-          {/* 左：手書きコピー。スマホは画面いっぱいに、メッセージ＝上／アクション＝下で配分（テキストは常に水平） */}
-          <div className="relative flex min-h-[calc(100svh-168px)] flex-col justify-between md:block md:min-h-0">
-            {/* メッセージ群（上） */}
-            <div className="md:contents">
-            <p className="mb-4 text-xl" style={{ fontFamily: FONT_HAND }}>
-              そのお悩み{" "}
-              <span style={{ color: LEAF }} className="hand-bold">
-                身体のクセ
-              </span>{" "}
-              かも？
-            </p>
+        {/* スマホ: メッセージ→体イラスト→アクション の縦並び。PC: コピー左／体イラスト右。 */}
+        <div className="flex flex-col items-center gap-7 md:grid md:grid-cols-[1.05fr_0.95fr] md:items-center md:gap-10">
+          {/* 左カラム（PC）／スマホは contents で子を並べ替え可能に */}
+          <div className="contents md:flex md:min-w-0 md:flex-col md:justify-center">
+            {/* メッセージ群 */}
+            <div className="order-1 w-full md:order-none">
+              <p className="mb-4 text-xl" style={{ fontFamily: FONT_HAND }}>
+                そのお悩み{" "}
+                <span style={{ color: LEAF }} className="hand-bold">
+                  身体のクセ
+                </span>{" "}
+                かも？
+              </p>
 
-            <h1 id="hero-heading" className="relative leading-[1.08]">
-              <span className="block text-[12vw] sm:text-6xl md:text-7xl" style={{ fontFamily: FONT_DISPLAY, color: INK }}>
-                自分のカラダは
-              </span>
-              <span className="block text-[12vw] sm:text-6xl md:text-7xl" style={{ fontFamily: FONT_DISPLAY, color: SUN }}>
-                自分次第
-              </span>
-            </h1>
+              <h1 id="hero-heading" className="relative leading-[1.08]">
+                <span className="block text-[12vw] sm:text-6xl md:text-7xl" style={{ fontFamily: FONT_DISPLAY, color: INK }}>
+                  自分のカラダは
+                </span>
+                <span className="block text-[12vw] sm:text-6xl md:text-7xl" style={{ fontFamily: FONT_DISPLAY, color: SUN }}>
+                  自分次第
+                </span>
+              </h1>
 
-            <p className="mt-6 text-xl font-bold md:text-2xl" style={{ color: INK }}>
-              <span className="marker">『私を育てる』</span>
-              <span className="inline-block">トレーニングスタジオ</span>
-            </p>
-
+              <p className="mt-6 text-xl font-bold md:text-2xl" style={{ color: INK }}>
+                <span className="marker">『私を育てる』</span>
+                <span className="inline-block">トレーニングスタジオ</span>
+              </p>
             </div>
 
-            {/* アクション群（下） */}
-            <div className="md:contents">
-            <div className="mt-0 flex flex-wrap items-center gap-3 md:mt-8">
-              {/* 体験/LINE はスマホでは下部固定バーにあるため非表示（PCのみ表示） */}
-              <Link
-                href="/contact"
-                className="hidden rounded-md px-6 py-3.5 text-lg font-bold text-white shadow-[0_14px_26px_-12px_rgba(240,133,31,1)] transition-transform hover:-translate-y-0.5 lg:inline-block"
-                style={{ background: SUN, transform: "rotate(-1.8deg)" }}
-              >
-                体験を申し込む
-              </Link>
-              <Link
-                href="/lessons"
-                className="rounded-md border-2 px-5 py-3 text-base font-bold transition-transform hover:-translate-y-0.5"
-                style={{ borderColor: INK, color: INK, transform: "rotate(1.2deg)", background: CREAM }}
-              >
-                レッスンを見る
-              </Link>
-              <Link
-                href="/contact"
-                className="hidden rounded-md px-5 py-3 text-base font-bold text-white transition-transform hover:-translate-y-0.5 lg:inline-block"
-                style={{ background: "#06C755", transform: "rotate(-0.8deg)" }}
-              >
-                LINEで相談
-              </Link>
-            </div>
+            {/* アクション群 */}
+            <div className="order-3 w-full md:order-none md:mt-8">
+              <div className="flex flex-wrap items-center gap-3">
+                {/* 体験/LINE はスマホでは下部固定バーにあるため非表示（PCのみ表示） */}
+                <Link
+                  href="/contact"
+                  className="hidden rounded-md px-6 py-3.5 text-lg font-bold text-white shadow-[0_14px_26px_-12px_rgba(240,133,31,1)] transition-transform hover:-translate-y-0.5 lg:inline-block"
+                  style={{ background: SUN, transform: "rotate(-1.8deg)" }}
+                >
+                  体験を申し込む
+                </Link>
+                <Link
+                  href="/lessons"
+                  className="rounded-md border-2 px-5 py-3 text-base font-bold transition-transform hover:-translate-y-0.5"
+                  style={{ borderColor: INK, color: INK, transform: "rotate(1.2deg)", background: CREAM }}
+                >
+                  レッスンを見る
+                </Link>
+                <Link
+                  href="/contact"
+                  className="hidden rounded-md px-5 py-3 text-base font-bold text-white transition-transform hover:-translate-y-0.5 lg:inline-block"
+                  style={{ background: "#06C755", transform: "rotate(-0.8deg)" }}
+                >
+                  LINEで相談
+                </Link>
+              </div>
 
-            <p className="mt-6 text-3xl md:mt-7" style={{ fontFamily: FONT_HAND, color: TERRA, transform: "rotate(-3deg)", transformOrigin: "left" }}>
-              ✎ studio Aula
-            </p>
+              <p className="mt-6 text-3xl md:mt-7" style={{ fontFamily: FONT_HAND, color: TERRA, transform: "rotate(-3deg)", transformOrigin: "left" }}>
+                ✎ studio Aula
+              </p>
             </div>
           </div>
 
-          {/* 右：傾いた写真スナップ＋マステ＋付箋＋矢印注釈 */}
-          <div className="relative mx-auto w-full max-w-sm md:max-w-none">
+          {/* 体イラスト＋マステ＋付箋（スマホは中央=順番2、PCは右） */}
+          <div className="relative order-2 mx-auto w-full max-w-[260px] sm:max-w-xs md:order-none md:max-w-none">
             <div className="relative" style={{ transform: `rotate(${TILT[0]})` }}>
               <Tape className="-left-2 -top-3" rotate="-9deg" />
               <Tape className="-right-3 top-1/2" rotate="84deg" />
-              <div className="overflow-hidden rounded-sm border-[6px] border-white shadow-[0_26px_50px_-24px_rgba(74,46,24,.7)]">
+              <div className="overflow-hidden rounded-sm border-[6px] border-white bg-[#FBF3DC] shadow-[0_26px_50px_-24px_rgba(74,46,24,.7)]">
                 <img
-                  src={heroPhoto}
-                  alt="Studio Aula のレッスンで笑顔で体を動かす様子"
-                  className="aspect-[4/5] w-full object-cover"
+                  src="/hero-body.png"
+                  alt="自分のカラダと向き合う——studio Aula の体づくり"
+                  className="block h-auto w-full"
                   loading="eager"
                 />
               </div>
-              <Sticky rotate="6deg" className="absolute -right-4 -top-4">
+              <Sticky rotate="6deg" className="absolute -right-4 top-[15%]">
                 肩こり
               </Sticky>
-              <Sticky rotate="-7deg" bg="#F5C95A" className="absolute -bottom-5 -left-4">
+              <Sticky rotate="4deg" className="absolute -right-5 top-[44%]">
+                腰痛
+              </Sticky>
+              <Sticky rotate="-7deg" bg="#F5C95A" className="absolute -left-4 top-[66%]">
                 膝・歩行
               </Sticky>
             </div>
