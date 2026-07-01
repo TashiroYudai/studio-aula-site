@@ -137,26 +137,23 @@ export default function Home() {
             </div>
           </div>
 
-          {/* 体イラスト＋マステ＋付箋（スマホは中央=順番2、PCは右） */}
-          <div className="relative order-2 mx-auto w-full max-w-[260px] sm:max-w-xs md:order-none md:max-w-none">
+          {/* 体イラスト＝人型に切り抜いたシール（枠なし・影付き）＋付箋で各部を指す */}
+          <div className="relative order-2 mx-auto w-full max-w-[280px] sm:max-w-[330px] md:order-none md:max-w-[440px]">
             <div className="relative" style={{ transform: `rotate(${TILT[0]})` }}>
-              <Tape className="-left-2 -top-3" rotate="-9deg" />
-              <Tape className="-right-3 top-1/2" rotate="84deg" />
-              <div className="overflow-hidden rounded-sm border-[6px] border-white bg-[#FBF3DC] shadow-[0_26px_50px_-24px_rgba(74,46,24,.7)]">
-                <img
-                  src="/hero-body.png"
-                  alt="自分のカラダと向き合う——studio Aula の体づくり"
-                  className="block h-auto w-full"
-                  loading="eager"
-                />
-              </div>
-              <Sticky rotate="6deg" className="absolute -right-4 top-[15%]">
+              <img
+                src="/hero-body-cut.png"
+                alt="自分のカラダと向き合う——studio Aula の体づくり"
+                className="block h-auto w-full"
+                style={{ filter: "drop-shadow(0 12px 15px rgba(74,46,24,0.26))" }}
+                loading="eager"
+              />
+              <Sticky rotate="6deg" className="absolute left-[59%] top-[14%]">
                 肩こり
               </Sticky>
-              <Sticky rotate="4deg" className="absolute -right-5 top-[44%]">
+              <Sticky rotate="4deg" className="absolute left-[63%] top-[38%]">
                 腰痛
               </Sticky>
-              <Sticky rotate="-7deg" bg="#F5C95A" className="absolute -left-4 top-[66%]">
+              <Sticky rotate="-7deg" bg="#F5C95A" className="absolute left-[1%] top-[60%]">
                 膝・歩行
               </Sticky>
             </div>
