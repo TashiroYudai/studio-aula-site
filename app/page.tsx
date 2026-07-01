@@ -1,429 +1,285 @@
 import Link from "next/link";
-import { lessons, features, testimonials, concerns } from "@/lib/site";
+import { lessons, features, testimonials, generations, line } from "@/lib/site";
 import { Reveal } from "@/components/Reveal";
-import { Scribble } from "@/components/Scribble";
+import { HeroHologram } from "@/components/HeroHologram";
 
 /* ──────────────────────────────────────────────────────────────────────────
-   Studio Aula — トップページ「陽だまりのスクラップブック — 育てるノート」
-   ページ全体を、先生が3世代分の記録を貼り重ねた一冊の手書きノートに見立てる。
-   署名：朱の手描き矢印/丸囲み＋付箋＋マステ。テキスト本体は常に水平・高コントラスト。
+   Studio Aula — トップページ「生体ホログラム / Body-as-Data」
+   体を“読み取れるデータ”として捉える冷色のテック表現。ヒーローは点群の人体。
+   下層セクションは計器パネル調（モノスペースのラベル＋シアンの罫）で静かに構成。
+   文言は旧サイト（肩こり/腰痛/膝痛・4レッスン・ワンコイン・3世代）を踏襲。
    ────────────────────────────────────────────────────────────────────────── */
 
-// 暖色トークン
-const CREAM = "#FBF3DC"; // 陽だまりの紙
-const SUN = "#F0851F"; // 主役オレンジ
-const MUSTARD = "#E8B73A"; // マステ・付箋
-const TERRA = "#C0492A"; // 手描きの朱（丸・矢印）
-const INK = "#4A2E18"; // 琥珀ブラウン（本文の濃色）
-const LEAF = "#4F9B53"; // 若葉グリーン（“身体のクセ”一語のみ）
+const SKY = "#EAF4FA";
+const CYAN = "#0FA5CB";
+const CYAN_DEEP = "#0A6E8C";
+const INK = "#0C2230";
+const SUB = "#5A7180";
+const DEEP = "#08283A"; // ダーク・データパネル
+const LINE_G = "#06C755";
 
-const FONT_DISPLAY = '"Dela Gothic One", system-ui, sans-serif';
-const FONT_BODY = '"Zen Maru Gothic", system-ui, sans-serif';
-const FONT_HAND = '"Yomogi", "Zen Maru Gothic", cursive';
+const F_DISPLAY = '"Zen Kaku Gothic New", system-ui, sans-serif';
+const F_GROTESK = '"Space Grotesk", "Zen Kaku Gothic New", sans-serif';
+const F_MONO = '"Space Mono", monospace';
 
-// 紙片の傾き（-2.5°〜+2° の小角度に固定）
-const TILT = ["-2.5deg", "1.6deg", "-1.4deg", "2deg", "-2deg", "1.2deg"];
-
-// マスキングテープ（半透明マスタード）
-function Tape({ className = "", rotate = "-6deg" }: { className?: string; rotate?: string }) {
+// セクションのモノスペース見出しラベル（“計測ログ”＝データの世界観を担う）
+function Label({ code, children }: { code: string; children: React.ReactNode }) {
   return (
-    <span
-      aria-hidden="true"
-      className={`absolute h-6 w-20 ${className}`}
-      style={{
-        transform: `rotate(${rotate})`,
-        background: `${MUSTARD}cc`,
-        boxShadow: "inset 0 0 0 1px rgba(255,255,255,.25)",
-      }}
-    />
-  );
-}
-
-// 付箋ラベル（Yomogi）
-function Sticky({
-  children,
-  rotate = "-3deg",
-  bg = MUSTARD,
-  className = "",
-}: {
-  children: React.ReactNode;
-  rotate?: string;
-  bg?: string;
-  className?: string;
-}) {
-  return (
-    <span
-      className={`inline-block px-3 py-1.5 text-base font-bold shadow-[0_8px_18px_-10px_rgba(74,46,24,.55)] ${className}`}
-      style={{ transform: `rotate(${rotate})`, background: bg, color: INK, fontFamily: FONT_HAND }}
-    >
-      {children}
-    </span>
+    <p className="mb-3 flex items-center gap-2.5" style={{ fontFamily: F_MONO }}>
+      <span className="text-[13px] font-bold tracking-widest" style={{ color: CYAN_DEEP }}>
+        {code}
+      </span>
+      <span aria-hidden className="h-px w-8" style={{ background: `${CYAN}66` }} />
+      <span className="text-[12px] tracking-wide" style={{ color: SUB }}>
+        {children}
+      </span>
+    </p>
   );
 }
 
 export default function Home() {
-  const heroPhoto = lessons[0].image;
-
   return (
-    <div
-      className="w-full overflow-x-hidden"
-      style={{
-        color: INK,
-        fontFamily: FONT_BODY,
-        backgroundColor: CREAM,
-        backgroundImage:
-          "repeating-linear-gradient(to bottom, transparent 0, transparent 37px, rgba(192,73,42,0.10) 37px, rgba(192,73,42,0.10) 38px)",
-      }}
-    >
-      {/* ───────────────────── ① HERO ＝ ノートの見開き ───────────────────── */}
-      <section className="relative mx-auto max-w-6xl px-5 pb-14 pt-3 md:px-8 md:pb-20 md:pt-16" aria-labelledby="hero-heading">
-        <div className="grid items-center gap-10 md:grid-cols-[1.05fr_0.95fr]">
-          {/* 左：手書きコピー。スマホは画面いっぱいに、メッセージ＝上／アクション＝下で配分（テキストは常に水平） */}
-          <div className="relative flex min-h-[calc(100svh-168px)] flex-col justify-between md:block md:min-h-0">
-            {/* メッセージ群（上） */}
-            <div className="md:contents">
-            <p className="mb-4 text-xl" style={{ fontFamily: FONT_HAND }}>
-              そのお悩み{" "}
-              <span style={{ color: LEAF }} className="hand-bold">
-                身体のクセ
-              </span>{" "}
-              かも？
-            </p>
+    <div style={{ background: SKY, color: INK, fontFamily: F_DISPLAY }}>
+      {/* ───────── ① HERO ＝ 点群の人体ホログラム ───────── */}
+      <HeroHologram />
 
-            <h1 id="hero-heading" className="relative leading-[1.08]">
-              <span className="block text-[12vw] sm:text-6xl md:text-7xl" style={{ fontFamily: FONT_DISPLAY, color: INK }}>
-                自分のカラダは
-              </span>
-              <span className="block text-[12vw] sm:text-6xl md:text-7xl" style={{ fontFamily: FONT_DISPLAY, color: SUN }}>
-                自分次第
-              </span>
-            </h1>
-
-            <p className="mt-6 text-xl font-bold md:text-2xl" style={{ color: INK }}>
-              <span className="marker">『私を育てる』</span>
-              <span className="inline-block">トレーニングスタジオ</span>
-            </p>
-
-            </div>
-
-            {/* アクション群（下） */}
-            <div className="md:contents">
-            <div className="mt-0 flex flex-wrap items-center gap-3 md:mt-8">
-              {/* 体験/LINE はスマホでは下部固定バーにあるため非表示（PCのみ表示） */}
-              <Link
-                href="/contact"
-                className="hidden rounded-md px-6 py-3.5 text-lg font-bold text-white shadow-[0_14px_26px_-12px_rgba(240,133,31,1)] transition-transform hover:-translate-y-0.5 lg:inline-block"
-                style={{ background: SUN, transform: "rotate(-1.8deg)" }}
-              >
-                体験を申し込む
-              </Link>
-              <Link
-                href="/lessons"
-                className="rounded-md border-2 px-5 py-3 text-base font-bold transition-transform hover:-translate-y-0.5"
-                style={{ borderColor: INK, color: INK, transform: "rotate(1.2deg)", background: CREAM }}
-              >
-                レッスンを見る
-              </Link>
-              <Link
-                href="/contact"
-                className="hidden rounded-md px-5 py-3 text-base font-bold text-white transition-transform hover:-translate-y-0.5 lg:inline-block"
-                style={{ background: "#06C755", transform: "rotate(-0.8deg)" }}
-              >
-                LINEで相談
-              </Link>
-            </div>
-
-            <p className="mt-6 text-3xl md:mt-7" style={{ fontFamily: FONT_HAND, color: TERRA, transform: "rotate(-3deg)", transformOrigin: "left" }}>
-              ✎ studio Aula
-            </p>
-            </div>
-          </div>
-
-          {/* 右：傾いた写真スナップ＋マステ＋付箋＋矢印注釈 */}
-          <div className="relative mx-auto w-full max-w-sm md:max-w-none">
-            <div className="relative" style={{ transform: `rotate(${TILT[0]})` }}>
-              <Tape className="-left-2 -top-3" rotate="-9deg" />
-              <Tape className="-right-3 top-1/2" rotate="84deg" />
-              <div className="overflow-hidden rounded-sm border-[6px] border-white shadow-[0_26px_50px_-24px_rgba(74,46,24,.7)]">
-                <img
-                  src={heroPhoto}
-                  alt="Studio Aula のレッスンで笑顔で体を動かす様子"
-                  className="aspect-[4/5] w-full object-cover"
-                  loading="eager"
-                />
-              </div>
-              <Sticky rotate="6deg" className="absolute -right-4 -top-4">
-                肩こり
-              </Sticky>
-              <Sticky rotate="-7deg" bg="#F5C95A" className="absolute -bottom-5 -left-4">
-                膝・歩行
-              </Sticky>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ───────────────── ② お悩み相談 ＝ 朱の手描き枠の「相談メモ」 ───────────────── */}
-      <section className="mx-auto max-w-5xl px-5 py-10 md:px-8 md:py-14" aria-labelledby="concern-heading">
-        <div
-          className="relative rounded-md border-[3px] border-dashed p-7 md:p-10"
-          style={{ borderColor: TERRA, background: "#FFFFFF", transform: `rotate(${TILT[2]})` }}
-        >
-          <Sticky rotate="-4deg" className="absolute -left-3 -top-5">
-            相談メモ
-          </Sticky>
-          <h2 id="concern-heading" className="text-xl font-black md:text-3xl" style={{ color: INK }}>
-            こんなこと、<br className="sm:hidden" />ありませんか？
-          </h2>
-
-          <div className="mt-6 grid gap-6 sm:grid-cols-2">
-            <div>
-              <p className="mb-3 text-base font-bold" style={{ color: SUN, fontFamily: FONT_HAND }}>
-                ◎ こうなりたい
-              </p>
-              <ul className="flex flex-wrap gap-2.5">
-                {concerns.goals.map((g) => (
-                  <li key={g} className="rounded-full px-4 py-2 text-base font-bold" style={{ background: `${MUSTARD}55`, color: INK }}>
-                    {g}↑
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div>
-              <p className="mb-3 text-base font-bold" style={{ color: TERRA, fontFamily: FONT_HAND }}>
-                ◯ こんなお悩み
-              </p>
-              <ul className="flex flex-wrap gap-3">
-                {concerns.troubles.map((t) => (
-                  <li key={t} className="px-2 py-2 text-lg font-black" style={{ color: INK }}>
-                    {t}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-
-          <Reveal className="mt-6">
-            <p className="text-base md:text-lg" style={{ color: INK }}>
-              …もちろん、ぜんぶ大丈夫。まずは <span className="marker font-bold">あなたの体のクセ</span> を一緒に見つけるところから。
-            </p>
-          </Reveal>
-          <Link
-            href="/contact"
-            className="mt-5 inline-block rounded-md px-5 py-3 text-base font-bold text-white transition-transform hover:-translate-y-0.5"
-            style={{ background: TERRA }}
-          >
-            お悩みを相談する
-          </Link>
-        </div>
-      </section>
-
-      {/* ─────────── ③ 3世代の帯（フルブリード・オレンジ地） ─────────── */}
-      <section className="relative w-full py-12 md:py-16" style={{ background: SUN }} aria-labelledby="gen-heading">
-        <div className="mx-auto max-w-6xl px-5 md:px-8">
-          <p className="text-base font-bold" style={{ color: "#FFE9CF", fontFamily: FONT_HAND }}>
-            キッズも、大人も、シニアも。
-          </p>
-          <Reveal className="relative mt-1 inline-block">
-            <h2 id="gen-heading" className="text-xl font-black text-white md:text-4xl" style={{ fontFamily: FONT_DISPLAY }}>
-              家族みんなで通えるスタジオ
+      {/* ───────── ③ 選ばれる理由（features） ───────── */}
+      <section className="px-5 py-16 md:px-8 md:py-20" style={{ background: "#F2FAFD" }} aria-labelledby="why-h">
+        <div className="mx-auto max-w-6xl">
+          <Reveal>
+            <Label code="DATA //">Aula が大切にしていること</Label>
+            <h2 id="why-h" className="text-2xl font-black md:text-4xl" style={{ color: INK }}>
+              その場しのぎでなく、<span style={{ color: CYAN }}>根本から</span>。
             </h2>
-            <Scribble className="absolute -bottom-2 left-0 h-2.5 w-full" color="#FFE3C2" delay="0.15s" />
           </Reveal>
-
-          <Reveal className="reveal-stagger relative mt-8 flex flex-wrap items-start justify-center gap-x-2 gap-y-8 sm:justify-start">
-            {[
-              { label: "キッズ", img: lessons[1].image },
-              { label: "大人", img: lessons[2].image },
-              { label: "シニア", img: lessons[0].image },
-            ].map((g, i) => (
-              <figure
-                key={g.label}
-                className="relative w-36 sm:-ml-4 sm:w-44 md:w-52"
-                style={{ transform: `rotate(${TILT[i + 1]})`, zIndex: 3 - i }}
+          <Reveal className="reveal-stagger mt-10 grid gap-5 md:grid-cols-3">
+            {features.map((f) => (
+              <div
+                key={f.title}
+                className="relative overflow-hidden rounded-2xl border bg-white p-7"
+                style={{ borderColor: `${CYAN}22`, boxShadow: "0 20px 44px -32px rgba(10,60,90,.35)" }}
               >
-                <Tape className="left-1/2 -top-2 -ml-10" rotate="-5deg" />
-                <div className="overflow-hidden rounded-sm border-[5px] border-white shadow-[0_20px_36px_-20px_rgba(74,46,24,.85)]">
-                  <img src={g.img} alt={`${g.label}世代のレッスンの様子`} className="aspect-square w-full object-cover" loading="lazy" />
-                </div>
-                <figcaption className="mt-2 text-center text-base font-black text-white" style={{ fontFamily: FONT_HAND }}>
-                  {g.label}
-                </figcaption>
-              </figure>
+                <span aria-hidden className="absolute right-4 top-4 text-lg font-bold" style={{ fontFamily: F_MONO, color: `${CYAN}66` }}>
+                  +
+                </span>
+                <span aria-hidden className="block h-1.5 w-10 rounded-full" style={{ background: `linear-gradient(90deg, ${CYAN}, ${CYAN_DEEP})` }} />
+                <h3 className="mt-5 text-lg font-black" style={{ color: INK }}>
+                  {f.title}
+                </h3>
+                <p className="mt-2.5 text-[15px] leading-relaxed" style={{ color: SUB }}>
+                  {f.body}
+                </p>
+              </div>
             ))}
           </Reveal>
-          <p className="mt-6 text-base font-bold text-white sm:hidden" style={{ fontFamily: FONT_HAND }}>
-            → 3世代が同じ場所で。
-          </p>
         </div>
       </section>
 
-      {/* ────────────── ④ 4つのレッスン ＝ ノートに貼った“ポラ写真” ────────────── */}
-      <section className="mx-auto max-w-6xl px-5 py-14 md:px-8 md:py-20" aria-labelledby="lessons-heading">
-        <div className="mb-10 flex items-end justify-between">
-          <Reveal className="relative">
-            <h2 id="lessons-heading" className="text-2xl font-black md:text-4xl" style={{ color: INK, fontFamily: FONT_DISPLAY }}>
-              4つのレッスン
-            </h2>
-            <Scribble className="absolute -bottom-2 left-0 h-2.5 w-full" delay="0.1s" />
+      {/* ───────── ④ 4つのレッスン ───────── */}
+      <section className="px-5 py-16 md:px-8 md:py-24" aria-labelledby="lesson-h">
+        <div className="mx-auto max-w-6xl">
+          <Reveal className="flex flex-wrap items-end justify-between gap-4">
+            <div>
+              <Label code="INDEX //">目的で選ぶ</Label>
+              <h2 id="lesson-h" className="text-3xl font-black md:text-5xl" style={{ color: INK }}>
+                4つのレッスン
+              </h2>
+            </div>
+            <p className="text-[13px]" style={{ fontFamily: F_MONO, color: SUB }}>
+              SB / MS / ZUMBA / PERSONAL
+            </p>
           </Reveal>
-          <Sticky rotate="3deg" className="hidden sm:inline-block">
-            貼ってみた
-          </Sticky>
-        </div>
 
-        <Reveal className="reveal-stagger grid gap-x-8 gap-y-14 sm:grid-cols-2 lg:grid-cols-4">
-          {lessons.map((l, i) => (
-            <article
-              key={l.id}
-              className={`relative ${i % 2 === 0 ? "lg:mt-0" : "lg:mt-10"}`}
-              style={{ transform: `rotate(${TILT[i % TILT.length]})` }}
-            >
-              <Tape className="left-1/2 -top-3 -ml-10" rotate={i % 2 ? "5deg" : "-6deg"} />
-              <Link href={`/lessons#${l.id}`} className="block bg-white p-3 pb-5 shadow-[0_22px_44px_-22px_rgba(74,46,24,.8)] transition-transform hover:-translate-y-1">
-                <div className="overflow-hidden">
-                  <img src={l.image} alt={`${l.name}（${l.sub}）のレッスンの様子`} className="aspect-[5/4] w-full object-cover" loading="lazy" />
+          <Reveal className="reveal-stagger mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {lessons.map((l) => (
+              <Link
+                key={l.id}
+                href={`/lessons#${l.id}`}
+                className="group relative flex flex-col overflow-hidden rounded-2xl border bg-white transition-transform hover:-translate-y-1"
+                style={{ borderColor: `${CYAN}22`, boxShadow: "0 22px 46px -30px rgba(10,60,90,.4)" }}
+              >
+                <div className="relative overflow-hidden">
+                  <img
+                    src={l.image}
+                    alt={`${l.name}（${l.sub}）`}
+                    className="aspect-[5/4] w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    style={{ filter: "saturate(.72) contrast(1.03)" }}
+                    loading="lazy"
+                  />
+                  <div className="absolute inset-0" style={{ background: "linear-gradient(180deg, rgba(15,165,203,0) 45%, rgba(8,40,58,.5))" }} />
+                  <span
+                    className="absolute left-3 top-3 rounded-md px-2 py-1 text-[11px] font-bold tracking-widest text-white"
+                    style={{ fontFamily: F_MONO, background: "rgba(8,40,58,.55)", border: "1px solid rgba(127,205,230,.4)" }}
+                  >
+                    {l.id.toUpperCase()}
+                  </span>
                 </div>
-                <div className="px-1 pt-4">
+                <div className="flex flex-1 flex-col p-5">
                   <div className="flex items-center gap-2">
-                    <span aria-hidden="true" className="h-3.5 w-3.5 rounded-full" style={{ background: l.dot }} />
-                    <h3 className="text-xl font-black" style={{ color: INK, fontFamily: FONT_DISPLAY }}>
+                    <span aria-hidden className="h-2.5 w-2.5 rounded-full" style={{ background: l.dot }} />
+                    <h3 className="text-xl font-black" style={{ color: INK }}>
                       {l.name}
                     </h3>
                   </div>
-                  <p className="mt-1 text-sm font-bold" style={{ color: SUN, fontFamily: FONT_HAND }}>
+                  <p className="mt-1 text-[12px] font-bold tracking-wide" style={{ fontFamily: F_MONO, color: CYAN_DEEP }}>
                     {l.sub}
                   </p>
-                  <p className="mt-2 text-base leading-relaxed" style={{ color: INK }}>
+                  <p className="mt-2.5 text-[14px] leading-relaxed" style={{ color: SUB }}>
                     {l.lead}
                   </p>
-                  <p className="mt-3 inline-block rounded px-2 py-1 text-sm font-bold" style={{ background: `${MUSTARD}44`, color: INK }}>
-                    {l.need}
+                  <p className="mt-auto pt-4 text-[13px] font-bold" style={{ color: INK }}>
+                    <span className="rounded px-2 py-1" style={{ background: `${CYAN}12`, color: CYAN_DEEP }}>
+                      {l.need}
+                    </span>
                   </p>
                 </div>
               </Link>
-            </article>
-          ))}
-        </Reveal>
-
-        <div className="relative mt-16 flex flex-col items-center text-center">
-          <p className="text-lg font-bold" style={{ color: INK }}>
-            グループレッスンは
-          </p>
-          <p className="text-[15vw] leading-none sm:text-7xl" style={{ fontFamily: FONT_DISPLAY, color: TERRA }}>
-            500
-            <span className="text-3xl">円</span>
-          </p>
-          <p className="mt-2 text-lg font-bold" style={{ fontFamily: FONT_HAND, color: SUN }}>
-            1回ワンコイン！
-          </p>
-          <p className="mt-2 text-sm" style={{ color: INK }}>
-            （パーソナルは 1回 2,500円・エアコン使用日は +100円）
-          </p>
+            ))}
+          </Reveal>
         </div>
       </section>
 
-      {/* ───────────── ⑤ お客様の声 ＝ 壁に貼った付箋3色 ───────────── */}
-      <section className="relative w-full py-14 md:py-20" style={{ background: "#FCE7C0" }} aria-labelledby="voice-heading">
-        <div className="mx-auto max-w-6xl px-5 md:px-8">
-          <Reveal className="relative mb-10 inline-block">
-            <h2 id="voice-heading" className="text-2xl font-black md:text-4xl" style={{ color: INK, fontFamily: FONT_DISPLAY }}>
-              通っている方の声
+      {/* ───────── ⑤ データパネル：3世代 × ワンコイン ───────── */}
+      <section className="relative overflow-hidden px-5 py-20 md:px-8 md:py-28" style={{ background: DEEP }} aria-labelledby="deep-h">
+        {/* 薄い罫のグリッド */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 opacity-[0.5]"
+          style={{
+            backgroundImage:
+              "linear-gradient(rgba(127,205,230,.06) 1px, transparent 1px), linear-gradient(90deg, rgba(127,205,230,.06) 1px, transparent 1px)",
+            backgroundSize: "44px 44px",
+          }}
+        />
+        <div className="relative mx-auto max-w-6xl">
+          <Reveal>
+            <Label code="ACCESS //">みんなの場所</Label>
+            <h2 id="deep-h" className="text-3xl font-black leading-tight text-white md:text-5xl">
+              キッズも、大人も、シニアも。<br />
+              <span style={{ color: "#7FCDE6" }}>3世代が同じ場所で。</span>
             </h2>
-            <Scribble className="absolute -bottom-2 left-0 h-2.5 w-full" delay="0.1s" />
           </Reveal>
 
-          <Reveal as="ul" className="reveal-stagger grid gap-8 sm:grid-cols-3">
-            {testimonials.map((t, i) => {
-              const bg = [MUSTARD + "dd", "#F5B0A0", "#FFD27A"][i % 3];
-              return (
-                <li
-                  key={t.who}
-                  className="relative p-6 shadow-[0_22px_40px_-22px_rgba(74,46,24,.85)]"
-                  style={{ background: bg, color: INK, transform: `rotate(${TILT[i + 2]})` }}
-                >
-                  <span aria-hidden="true" className="absolute left-1/2 -top-2 -ml-1.5 h-3 w-3 rounded-full shadow-md" style={{ background: TERRA }} />
-                  <p className="text-base leading-relaxed" style={{ fontFamily: FONT_BODY }}>
-                    「{t.body}」
-                  </p>
-                  <p className="mt-4 text-lg font-bold" style={{ fontFamily: FONT_HAND }}>
+          <Reveal className="reveal-stagger mt-10 grid gap-5 sm:grid-cols-3">
+            {generations.map((g) => (
+              <figure key={g.id} className="overflow-hidden rounded-2xl" style={{ border: "1px solid rgba(127,205,230,.22)" }}>
+                <div className="relative">
+                  <img src={g.image} alt={`${g.badge}のレッスン`} className="aspect-[4/3] w-full object-cover" style={{ filter: "saturate(.55) contrast(1.05) brightness(.92)" }} loading="lazy" />
+                  <div className="absolute inset-0" style={{ background: "linear-gradient(180deg, rgba(8,40,58,0) 40%, rgba(8,40,58,.72))" }} />
+                  <figcaption className="absolute bottom-3 left-4 text-lg font-black text-white">
+                    {g.badge}
+                    <span className="ml-2 text-[11px] font-bold" style={{ fontFamily: F_MONO, color: "#7FCDE6" }}>
+                      {g.id.toUpperCase()}
+                    </span>
+                  </figcaption>
+                </div>
+              </figure>
+            ))}
+          </Reveal>
+
+          <div className="mt-12 flex flex-col items-start gap-2 border-t pt-10 sm:flex-row sm:items-end sm:justify-between" style={{ borderColor: "rgba(127,205,230,.2)" }}>
+            <div>
+              <p className="text-base font-bold" style={{ color: "#BFE0EC" }}>
+                グループレッスンは、1回
+              </p>
+              <p className="flex items-baseline gap-2 leading-none">
+                <span className="text-7xl font-black text-white md:text-8xl" style={{ fontFamily: F_GROTESK }}>
+                  500
+                </span>
+                <span className="text-2xl font-black text-white">円</span>
+                <span className="ml-1 rounded-full px-3 py-1 text-sm font-bold" style={{ background: `${CYAN}`, color: DEEP }}>
+                  ワンコイン
+                </span>
+              </p>
+              <p className="mt-3 text-sm" style={{ color: "#8FB6C8", fontFamily: F_MONO }}>
+                PERSONAL ¥2,500 / 入会金 無料 / エアコン使用日 +¥100
+              </p>
+            </div>
+            <Link
+              href="/programs"
+              className="rounded-full border px-6 py-3 text-base font-bold text-white transition-colors hover:bg-white/10"
+              style={{ borderColor: "rgba(127,205,230,.5)" }}
+            >
+              料金を見る →
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* ───────── ⑥ お客様の声 ───────── */}
+      <section className="px-5 py-16 md:px-8 md:py-24" style={{ background: "#F2FAFD" }} aria-labelledby="voice-h">
+        <div className="mx-auto max-w-6xl">
+          <Reveal>
+            <Label code="LOG //">通っている方の声</Label>
+            <h2 id="voice-h" className="text-2xl font-black md:text-4xl" style={{ color: INK }}>
+              変化は、ちゃんと起きている。
+            </h2>
+          </Reveal>
+          <Reveal as="ul" className="reveal-stagger mt-10 grid gap-5 sm:grid-cols-3">
+            {testimonials.map((t) => (
+              <li
+                key={t.who}
+                className="relative rounded-2xl border bg-white p-7"
+                style={{ borderColor: `${CYAN}22`, boxShadow: "0 20px 44px -32px rgba(10,60,90,.35)" }}
+              >
+                <span aria-hidden className="text-4xl font-black leading-none" style={{ color: `${CYAN}44`, fontFamily: F_GROTESK }}>
+                  &ldquo;
+                </span>
+                <p className="mt-1 text-[15px] leading-relaxed" style={{ color: INK }}>
+                  {t.body}
+                </p>
+                <div className="mt-5 flex items-center justify-between">
+                  <p className="text-sm font-black" style={{ color: INK }}>
                     {t.who}
                   </p>
-                  <p className="mt-1 inline-block rounded px-2 py-0.5 text-sm font-bold" style={{ background: "#ffffffaa", color: TERRA }}>
+                  <span className="rounded-full px-2.5 py-1 text-[11px] font-bold" style={{ fontFamily: F_MONO, background: `${CYAN}14`, color: CYAN_DEEP }}>
                     {t.tag}
-                  </p>
-                </li>
-              );
-            })}
+                  </span>
+                </div>
+              </li>
+            ))}
           </Reveal>
-          <p className="mt-6 text-sm" style={{ color: INK }}>
+          <p className="mt-6 text-xs" style={{ color: SUB }}>
             ※ 掲載は一例です（実際にいただいた声に差し替え予定）。
           </p>
         </div>
       </section>
 
-      {/* ─────────────── なぜ選ばれる（features）＝メモの箇条書き ─────────────── */}
-      <section className="mx-auto max-w-5xl px-5 py-14 md:px-8 md:py-16" aria-labelledby="why-heading">
-        <Reveal className="relative mb-8 inline-block">
-          <h2 id="why-heading" className="text-xl font-black md:text-3xl" style={{ color: INK, fontFamily: FONT_DISPLAY }}>
-            Aula が大切にしていること
-          </h2>
-          <Scribble className="absolute -bottom-2 left-0 h-2.5 w-full" delay="0.1s" />
-        </Reveal>
-        <Reveal as="ul" className="space-y-5">
-          {features.map((f, i) => (
-            <li key={f.title} className="flex gap-4" style={{ transform: `rotate(${i % 2 ? "0.5deg" : "-0.5deg"})` }}>
-              <span
-                aria-hidden="true"
-                className="mt-1 grid h-9 w-9 shrink-0 place-items-center rounded-full text-lg font-black"
-                style={{ background: [SUN, TERRA, MUSTARD][i % 3], color: i === 2 ? INK : "#fff", fontFamily: FONT_HAND }}
-              >
-                {i + 1}
-              </span>
-              <div>
-                <h3 className="text-lg font-black" style={{ color: INK }}>
-                  <span className="marker">{f.title}</span>
-                </h3>
-                <p className="mt-1 text-base leading-relaxed" style={{ color: INK }}>
-                  {f.body}
-                </p>
-              </div>
-            </li>
-          ))}
-        </Reveal>
-      </section>
-
-      {/* ──────────────────────── ⑥ CTA バンド（オレンジ全面） ──────────────────────── */}
-      <section className="relative w-full overflow-hidden py-16 md:py-24" style={{ background: SUN }} aria-labelledby="cta-heading">
-        <span
-          aria-hidden="true"
-          className="pointer-events-none absolute -right-6 top-1/2 -translate-y-1/2 select-none text-[40vw] leading-none opacity-10 md:text-[20rem]"
-          style={{ fontFamily: FONT_DISPLAY, color: "#fff" }}
-        >
-          育
-        </span>
-        <div className="relative mx-auto max-w-4xl px-5 text-center md:px-8">
-          <p className="text-lg font-bold" style={{ color: "#FFE9CF", fontFamily: FONT_HAND }}>
-            考えるより、まず一歩。
+      {/* ───────── ⑦ CTA ───────── */}
+      <section className="relative overflow-hidden px-5 py-20 md:px-8 md:py-28" aria-labelledby="cta-h">
+        <div
+          aria-hidden
+          className="pointer-events-none absolute -right-24 top-1/2 h-[420px] w-[420px] -translate-y-1/2 rounded-full opacity-60"
+          style={{ background: "radial-gradient(circle, rgba(15,165,203,.18), rgba(15,165,203,0) 70%)" }}
+        />
+        <div className="relative mx-auto max-w-3xl text-center">
+          <p className="text-sm font-bold tracking-widest" style={{ fontFamily: F_MONO, color: CYAN_DEEP }}>
+            READY TO START
           </p>
-          <h2 id="cta-heading" className="mt-2 text-3xl font-black text-white md:text-6xl" style={{ fontFamily: FONT_DISPLAY }}>
-            まずは、体験から。
+          <h2 id="cta-h" className="mt-3 text-3xl font-black leading-tight md:text-6xl" style={{ color: INK }}>
+            自分のカラダは、<br className="sm:hidden" />
+            <span style={{ color: CYAN }}>自分次第。</span>
           </h2>
+          <p className="mx-auto mt-4 max-w-md text-base" style={{ color: SUB }}>
+            まずは体験から。運動が初めての方も、マンツーマンだから安心です。
+          </p>
           <div className="mt-9 flex flex-wrap items-center justify-center gap-4">
             <Link
               href="/contact"
-              className="rounded-md bg-white px-8 py-4 text-lg font-black shadow-[0_18px_34px_-16px_rgba(74,46,24,1)] transition-transform hover:-translate-y-0.5"
-              style={{ color: TERRA, transform: "rotate(-1.5deg)" }}
+              className="rounded-full px-8 py-4 text-lg font-black text-white transition-transform hover:-translate-y-0.5"
+              style={{ background: `linear-gradient(135deg, #12b0d8, ${CYAN_DEEP})`, boxShadow: "0 18px 36px -14px rgba(15,165,203,.8)" }}
             >
               体験を申し込む
             </Link>
-            <Link
-              href="/contact"
-              className="rounded-md px-7 py-4 text-lg font-black text-white shadow-[0_18px_34px_-16px_rgba(6,199,85,1)] transition-transform hover:-translate-y-0.5"
-              style={{ background: "#06C755", transform: "rotate(1.2deg)" }}
+            <a
+              href={line.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 rounded-full px-7 py-4 text-lg font-black text-white transition-transform hover:-translate-y-0.5"
+              style={{ background: LINE_G, boxShadow: "0 18px 36px -14px rgba(6,199,85,.6)" }}
             >
               LINEで相談
-            </Link>
+            </a>
           </div>
         </div>
       </section>

@@ -32,7 +32,7 @@ export default function RootLayout({
           crossOrigin="anonymous"
         />
         <link
-          href="https://fonts.googleapis.com/css2?family=Zen+Old+Mincho:wght@400;500;600;700;900&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=Space+Mono:wght@400;700&family=Yusei+Magic&family=Dela+Gothic+One&family=Yomogi&family=Reggae+One&family=Zen+Maru+Gothic:wght@500;700;900&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Zen+Old+Mincho:wght@400;500;600;700;900&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Yusei+Magic&family=Dela+Gothic+One&family=Yomogi&family=Reggae+One&family=Zen+Maru+Gothic:wght@500;700;900&display=swap"
           rel="stylesheet"
         />
       </head>
@@ -41,7 +41,7 @@ export default function RootLayout({
         <main>{children}</main>
         <Footer />
         {/* スマホ固定バーの高さ分のスペーサー（最下部が隠れないように） */}
-        <div className="h-[72px] lg:hidden" aria-hidden />
+        <div className="h-[72px] lg:hidden" aria-hidden style={{ background: "#08283A" }} />
         <MobileCTA />
       </body>
     </html>
