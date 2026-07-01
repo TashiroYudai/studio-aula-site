@@ -705,3 +705,46 @@ body {
   font-size: 0.95rem;
   color: var(--holo-cyan-deep);
 }
+
+/* ── スマホ最適化：ヒーローのクラッター削減（固定バーが常時CTAを担う） ── */
+@media (max-width: 767px) {
+  /* コピー内の重複CTAと計測ログは隠す（下部固定バーに集約） */
+  .hero-holo__cta,
+  .hero-holo__readout {
+    display: none;
+  }
+  /* ヒーローの見出しをホログラムの上でも読みやすく */
+  .hero-holo__lead {
+    text-shadow: 0 1px 12px rgba(244, 251, 254, 0.85);
+  }
+  .hero-holo__copy-inner {
+    padding: 1.5rem 1.25rem;
+  }
+
+  /* 診断カード（ボトムシート）：固定バーとの重複CTAを隠し、余白を締める */
+  .hero-story__cta {
+    display: none;
+  }
+  .hero-story.is-animate .hero-story__card {
+    left: 0.9rem;
+    right: 0.9rem;
+    bottom: calc(env(safe-area-inset-bottom, 0px) + 82px);
+    padding: 1.15rem 1.2rem;
+  }
+  .hero-story__label {
+    font-size: clamp(1.7rem, 8.5vw, 2.15rem);
+  }
+  .hero-story__label--sum {
+    font-size: clamp(1.45rem, 6.5vw, 1.8rem);
+  }
+  .hero-story__body {
+    font-size: 0.94rem;
+    margin-top: 0.7rem;
+  }
+  .hero-story__aula {
+    margin-top: 0.7rem;
+  }
+  .hero-story__goals {
+    margin-top: 0.75rem;
+  }
+}
