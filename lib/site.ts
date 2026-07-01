@@ -150,7 +150,8 @@ export const instagram = "https://www.instagram.com/aula.kumamo";
 
 // LINE公式アカウント @sim5277r（申し込み・お問い合わせ）
 export const line = {
-  qr: "/line-qr.png",
+  // GitHub Pages のサブパス配信でも 404 しないよう basePath を前置（ローカルは空）
+  qr: (process.env.NEXT_PUBLIC_BASE_PATH || "") + "/line-qr.png",
   url: "https://line.me/R/ti/p/@sim5277r",
 };
 
