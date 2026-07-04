@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
-import { MobileCTA } from "@/components/MobileCTA";
 import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -40,9 +39,6 @@ export default function RootLayout({
         <Nav />
         <main>{children}</main>
         <Footer />
-        {/* スマホ固定バーの高さ分のスペーサー（最下部が隠れないように） */}
-        <div className="h-[72px] lg:hidden" aria-hidden />
-        <MobileCTA />
       </body>
     </html>
   );

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { lessons, features, testimonials, concerns } from "@/lib/site";
+import { lessons, features, testimonials, concerns, line } from "@/lib/site";
 import { Reveal } from "@/components/Reveal";
 import { EucaBranch, EucaLeaf, EucaSprig, EucaDivider } from "@/components/euca";
 
@@ -51,25 +51,26 @@ export default function Home() {
             {/* アクション群 */}
             <div className="order-3 w-full md:order-none md:mt-8">
               <div className="flex flex-wrap items-center gap-3">
-                {/* 体験/LINE はスマホでは下部固定バーにあるため非表示（PCのみ表示） */}
                 <Link
                   href="/contact"
-                  className="hidden rounded-full bg-euca-700 px-7 py-3.5 text-lg font-bold text-white shadow-leaf transition-colors hover:bg-euca-800 lg:inline-block"
+                  className="rounded-full bg-euca-700 px-7 py-3.5 text-lg font-bold text-white shadow-leaf transition-colors hover:bg-euca-800"
                 >
                   体験を申し込む
                 </Link>
+                <a
+                  href={line.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="rounded-full px-5 py-3.5 text-base font-bold text-white shadow-leaf transition-transform hover:-translate-y-0.5"
+                  style={{ background: "#06C755" }}
+                >
+                  LINEで相談
+                </a>
                 <Link
                   href="/lessons"
                   className="rounded-full border-2 border-euca-700 bg-transparent px-5 py-3 text-base font-bold text-euca-700 transition-colors hover:bg-euca-100"
                 >
                   レッスンを見る
-                </Link>
-                <Link
-                  href="/contact"
-                  className="hidden rounded-full px-5 py-3 text-base font-bold text-white transition-transform hover:-translate-y-0.5 lg:inline-block"
-                  style={{ background: "#06C755" }}
-                >
-                  LINEで相談
                 </Link>
               </div>
 

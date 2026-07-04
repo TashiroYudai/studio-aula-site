@@ -21,16 +21,16 @@ export function Nav() {
 
   return (
     <header className="sticky top-0 z-50 border-b border-line bg-washi/95 text-ink backdrop-blur-md">
-      <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-3 md:px-8">
+      <div className="mx-auto flex max-w-6xl items-center justify-between gap-2 px-4 py-3 md:gap-4 md:px-8">
         {/* ロゴ */}
-        <Link href="/" className="flex items-center gap-2.5" aria-label={site.name}>
+        <Link href="/" className="flex shrink-0 items-center gap-2 md:gap-2.5" aria-label={site.name}>
           <span
             aria-hidden="true"
-            className="grid h-10 w-10 place-items-center rounded-full bg-euca-700 text-washi"
+            className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-euca-700 text-washi md:h-10 md:w-10"
           >
             <EucaLeaf className="h-5 w-5" />
           </span>
-          <span className="font-display text-[1.35rem] leading-none text-ink">
+          <span className="whitespace-nowrap font-display text-[1.15rem] leading-none text-ink md:text-[1.35rem]">
             studio Aula
           </span>
         </Link>
@@ -60,7 +60,7 @@ export function Nav() {
 
           <Link
             href="/contact"
-            className="hidden rounded-full bg-euca-700 px-5 py-3 text-[15px] font-bold text-white shadow-leaf transition-colors hover:bg-euca-800 md:inline-block"
+            className="inline-block whitespace-nowrap rounded-full bg-euca-700 px-3.5 py-2.5 text-sm font-bold text-white shadow-leaf transition-colors hover:bg-euca-800 md:px-5 md:py-3 md:text-[15px]"
           >
             体験申込
           </Link>
