@@ -32,7 +32,7 @@ export default function RootLayout({
           crossOrigin="anonymous"
         />
         <link
-          href="https://fonts.googleapis.com/css2?family=Zen+Old+Mincho:wght@400;500;600;700;900&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=Space+Mono:wght@400;700&family=Yusei+Magic&family=Dela+Gothic+One&family=Yomogi&family=Reggae+One&family=Zen+Maru+Gothic:wght@500;700;900&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Kiwi+Maru:wght@400;500&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap"
           rel="stylesheet"
         />
       </head>

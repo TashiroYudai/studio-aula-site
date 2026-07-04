@@ -83,7 +83,7 @@ export const lessons: {
     sub: "Soft & balance",
     lead: "体のしくみ・使い方を知り、整える。",
     need: "座学・ストレッチ・ソフトな運動",
-    dot: "#7BB342",
+    dot: "#8CA47B",
     image:
       "https://images.unsplash.com/photo-1545205597-3d9d02c29597?auto=format&fit=crop&w=900&q=80",
     description:
@@ -102,7 +102,7 @@ export const lessons: {
     sub: "Move & Stretch",
     lead: "体の正しい動かし方とストレッチ。",
     need: "筋力・体力アップ",
-    dot: "#F79545",
+    dot: "#5F7550",
     image:
       "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=900&q=80",
     description:
@@ -117,7 +117,7 @@ export const lessons: {
     sub: "ダンスエクササイズ",
     lead: "世界中の音楽とステップで、踊って燃やす。",
     need: "ダイエット・ストレス発散・体力増進",
-    dot: "#C2706B",
+    dot: "#B95C50",
     image:
       "https://images.unsplash.com/photo-1547153760-18fc86324498?auto=format&fit=crop&w=900&q=80",
     description:
@@ -133,7 +133,7 @@ export const lessons: {
     sub: "完全マンツーマン",
     lead: "あなただけのオーダーメイド。目標に最短で。",
     need: "ボディメイク・不調改善",
-    dot: "#B84E12",
+    dot: "#35452D",
     image:
       "https://images.unsplash.com/photo-1594381898411-846e7d193883?auto=format&fit=crop&w=900&q=80",
     description:
@@ -258,7 +258,7 @@ export const pricing = {
       price: "500",
       per: "1回",
       note: "エアコンを使う日は +100円",
-      dot: "#F07B22",
+      dot: "#7C9268",
     },
     {
       name: "パーソナル",
@@ -266,7 +266,7 @@ export const pricing = {
       price: "2,500",
       per: "1回",
       note: "はじめての方におすすめ",
-      dot: "#B84E12",
+      dot: "#35452D",
     },
   ],
 };

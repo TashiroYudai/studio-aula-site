@@ -21,17 +21,17 @@ export default function ContactPage() {
 
       {/* LINE（いちばん簡単） */}
       <section className="mx-auto max-w-5xl px-6 pt-12 md:px-8">
-        <div className="flex flex-col items-center gap-6 rounded-frame border border-[#06C755]/30 bg-[#06C755]/[0.07] p-7 text-center md:flex-row md:gap-8 md:p-9 md:text-left">
+        <div className="flex flex-col items-center gap-6 rounded-frame border border-line bg-card p-7 text-center shadow-leaf md:flex-row md:gap-8 md:p-9 md:text-left">
           <img
             src={line.qr}
             alt="LINE友だち追加用QRコード"
-            className="h-32 w-32 shrink-0 rounded-card border border-line bg-white p-2"
+            className="h-32 w-32 shrink-0 rounded-leaf border border-line bg-card p-2"
           />
           <div className="flex-1">
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-[#06C755] px-3 py-1 font-mono text-[11px] font-bold text-white">
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-euca-100 px-3 py-1 font-sans text-xs font-bold uppercase tracking-label text-euca-700">
               <LineIcon size={13} /> EASY
             </span>
-            <h2 className="mt-2.5 font-display text-2xl font-bold text-ink">LINEで申し込み・ご相談</h2>
+            <h2 className="mt-2.5 font-display text-2xl font-medium text-ink">LINEで申し込み・ご相談</h2>
             <p className="mt-2 leading-relaxed text-sub">
               友だち追加して、そのままメッセージで予約・お問い合わせができます。当日の空き状況の確認もスムーズです。
             </p>
@@ -40,7 +40,8 @@ export default function ContactPage() {
             href={line.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex shrink-0 items-center gap-2.5 rounded-full bg-[#06C755] px-8 py-4 text-lg font-bold text-white shadow-soft transition hover:brightness-105"
+            className="inline-flex shrink-0 items-center gap-2.5 rounded-full px-8 py-4 text-lg font-bold text-white shadow-leaf transition hover:brightness-105"
+            style={{ background: "#06C755" }}
           >
             <LineIcon size={22} /> 友だち追加する
           </a>
@@ -50,17 +51,17 @@ export default function ContactPage() {
       {/* 体験の流れ */}
       <section className="mx-auto max-w-6xl px-6 py-16 md:px-8 md:py-24">
         <SectionLabel>Flow</SectionLabel>
-        <h2 className="mt-4 font-display text-3xl font-bold text-ink md:text-4xl">体験レッスンの流れ</h2>
+        <h2 className="mt-4 font-display text-3xl font-medium text-ink md:text-4xl">体験レッスンの流れ</h2>
         <div className="mt-10 grid gap-6 md:grid-cols-4">
           {steps.map((s, i) => (
-            <div key={i} className="relative rounded-card border border-line bg-card p-7 shadow-card">
-              <span className="font-mono text-sm font-bold text-honey-500">
+            <div key={i} className="relative rounded-leaf border border-line bg-card p-7 shadow-leaf">
+              <span className="font-display text-sm font-medium text-euca-600">
                 {String(i + 1).padStart(2, "0")}
               </span>
-              <h3 className="mt-3 font-display text-lg font-bold text-ink">{s.title}</h3>
+              <h3 className="mt-3 font-display text-lg font-medium text-ink">{s.title}</h3>
               <p className="mt-2 text-sub">{s.body}</p>
               {i !== steps.length - 1 && (
-                <span className="absolute right-5 top-7 hidden text-pine-300 md:block" aria-hidden>
+                <span className="absolute right-5 top-7 hidden text-euca-400 md:block" aria-hidden>
                   →
                 </span>
               )}
@@ -70,11 +71,11 @@ export default function ContactPage() {
       </section>
 
       {/* フォーム + アクセス情報 */}
-      <section className="border-y border-line bg-mist py-16 md:py-24">
+      <section className="border-y border-line bg-euca-50 py-16 md:py-24">
         <div className="mx-auto grid max-w-6xl grid-cols-1 gap-10 px-6 md:px-8 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]">
           <div>
             <SectionLabel>Booking</SectionLabel>
-            <h2 className="mt-4 font-display text-3xl font-bold text-ink md:text-4xl">体験のお申し込み</h2>
+            <h2 className="mt-4 font-display text-3xl font-medium text-ink md:text-4xl">体験のお申し込み</h2>
             <p className="mt-3 text-sub">必須項目をご記入のうえ送信してください。</p>
             <div className="mt-8">
               <ContactForm />
@@ -83,8 +84,8 @@ export default function ContactPage() {
 
           <div>
             <SectionLabel>Access</SectionLabel>
-            <h2 className="mt-4 font-display text-3xl font-bold text-ink md:text-4xl">アクセス</h2>
-            <div className="mt-8 space-y-5 rounded-frame border border-line bg-card p-7 shadow-card">
+            <h2 className="mt-4 font-display text-3xl font-medium text-ink md:text-4xl">アクセス</h2>
+            <div className="mt-8 space-y-5 rounded-frame border border-line bg-card p-7 shadow-leaf">
               <InfoRow label="住所" value={site.address} />
               <InfoRow label="メール" value={site.email} href={`mailto:${site.email}`} />
               <InfoRow label="ご予約" value="LINE・フォームから" />
@@ -94,7 +95,7 @@ export default function ContactPage() {
                   {site.hours.map((h) => (
                     <li key={h.day} className="flex justify-between border-b border-line py-1.5 last:border-0">
                       <span className="text-ink">{h.day}</span>
-                      <span className="font-mono text-sm text-sub">{h.time}</span>
+                      <span className="text-sm text-sub">{h.time}</span>
                     </li>
                   ))}
                 </ul>
@@ -102,7 +103,7 @@ export default function ContactPage() {
             </div>
 
             {/* Googleマップ埋め込み */}
-            <div className="mt-6 overflow-hidden rounded-frame border border-line shadow-card">
+            <div className="mt-6 overflow-hidden rounded-frame border border-line shadow-leaf">
               <iframe
                 title="アクセスマップ"
                 src={`https://www.google.com/maps?q=${encodeURIComponent(site.mapQuery)}&output=embed`}
@@ -119,7 +120,7 @@ export default function ContactPage() {
       {/* FAQ */}
       <section className="mx-auto max-w-4xl px-6 py-16 md:px-8 md:py-24">
         <SectionLabel>FAQ</SectionLabel>
-        <h2 className="mt-4 font-display text-3xl font-bold text-ink md:text-4xl">よくある質問</h2>
+        <h2 className="mt-4 font-display text-3xl font-medium text-ink md:text-4xl">よくある質問</h2>
         <div className="mt-10">
           <Faq />
         </div>

@@ -1,31 +1,27 @@
 import Link from "next/link";
 import { nav, site, instagram, line } from "@/lib/site";
+import { EucaLeaf, EucaBranch } from "@/components/euca";
 
-const CREAM = "#FBF3DC";
-const SUN = "#F0851F";
-const TERRA = "#C0492A";
-const INK = "#4A2E18";
-const HAND = '"Yomogi", "Zen Maru Gothic", cursive';
-const BODY = '"Zen Maru Gothic", system-ui, sans-serif';
-
+// フッター＝「土」。ページの一番下で枝を支える深い緑。
 export function Footer() {
   return (
-    <footer className="w-full border-t-2 border-dashed" style={{ borderColor: `${INK}33`, background: CREAM, color: INK, fontFamily: BODY }}>
-      <div className="mx-auto grid max-w-6xl grid-cols-1 gap-10 px-5 py-14 md:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)_minmax(0,1fr)] md:px-8">
+    <footer className="relative w-full overflow-hidden bg-euca-900 text-washi">
+      <EucaBranch
+        decorative
+        className="pointer-events-none absolute -right-10 -top-16 h-[26rem] text-euca-300 opacity-[0.08]"
+      />
+      <div className="relative mx-auto grid max-w-6xl grid-cols-1 gap-10 px-5 py-14 md:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)_minmax(0,1fr)] md:px-8">
         <div>
           <div className="flex items-center gap-2.5">
             <span
               aria-hidden="true"
-              className="grid h-9 w-9 place-items-center rounded-full text-lg font-black"
-              style={{ background: TERRA, color: CREAM, transform: "rotate(-4deg)", fontFamily: HAND }}
+              className="grid h-9 w-9 place-items-center rounded-full bg-euca-100 text-euca-800"
             >
-              A
+              <EucaLeaf className="h-[18px] w-[18px]" />
             </span>
-            <span className="text-2xl" style={{ fontFamily: HAND }}>
-              studio Aula
-            </span>
+            <span className="font-display text-2xl">studio Aula</span>
           </div>
-          <p className="mt-4 max-w-xs text-sm leading-relaxed" style={{ color: `${INK}cc` }}>
+          <p className="mt-4 max-w-xs text-sm leading-relaxed text-[#C9D2BE]">
             子供からお年寄りまで、一人ひとりに必要なトレーニングで「動ける体」を育てるパーソナルトレーニング教室です。
           </p>
           <div className="mt-5 flex flex-wrap gap-3">
@@ -33,7 +29,7 @@ export function Footer() {
               href={line.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-md px-4 py-2.5 text-sm font-bold text-white transition-transform hover:-translate-y-0.5"
+              className="inline-flex items-center gap-2 rounded-full px-4 py-2.5 text-sm font-bold text-white transition-transform hover:-translate-y-0.5"
               style={{ background: "#06C755" }}
             >
               <LineGlyph /> LINE
@@ -42,8 +38,7 @@ export function Footer() {
               href={instagram}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-md border-2 px-4 py-2.5 text-sm font-bold transition-transform hover:-translate-y-0.5"
-              style={{ borderColor: `${INK}33`, color: INK }}
+              className="inline-flex items-center gap-2 rounded-full border border-euca-700 px-4 py-2.5 text-sm font-bold text-washi transition-colors hover:bg-euca-800"
             >
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden>
                 <rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" strokeWidth="2" />
@@ -56,13 +51,14 @@ export function Footer() {
         </div>
 
         <div>
-          <h3 className="text-base font-black" style={{ color: TERRA, fontFamily: HAND }}>
-            メニュー
-          </h3>
+          <h3 className="font-display text-base text-euca-300">メニュー</h3>
           <ul className="mt-4 space-y-2.5">
             {nav.map((n) => (
               <li key={n.href}>
-                <Link href={n.href} className="font-bold transition-colors hover:text-[#F0851F]" style={{ color: INK }}>
+                <Link
+                  href={n.href}
+                  className="font-bold text-washi/90 transition-colors hover:text-euca-200"
+                >
                   {n.label}
                 </Link>
               </li>
@@ -71,11 +67,9 @@ export function Footer() {
         </div>
 
         <div>
-          <h3 className="text-base font-black" style={{ color: TERRA, fontFamily: HAND }}>
-            アクセス
-          </h3>
-          <ul className="mt-4 space-y-2.5" style={{ color: `${INK}dd` }}>
-            <li className="font-bold">{site.address}</li>
+          <h3 className="font-display text-base text-euca-300">アクセス</h3>
+          <ul className="mt-4 space-y-2.5 text-[#C9D2BE]">
+            <li className="keep-all font-bold text-washi/90">{site.address}</li>
             <li className="text-sm">ご予約：LINE・フォームから</li>
             {site.hours.map((h) => (
               <li key={h.day} className="text-sm">
@@ -85,8 +79,8 @@ export function Footer() {
           </ul>
         </div>
       </div>
-      <div className="border-t" style={{ borderColor: `${INK}22` }}>
-        <p className="mx-auto max-w-6xl px-5 py-5 text-xs md:px-8" style={{ color: `${INK}99` }}>
+      <div className="relative border-t border-euca-800">
+        <p className="mx-auto max-w-6xl px-5 py-5 text-xs text-washi/60 md:px-8">
           © {new Date().getFullYear()} {site.name} — 熊本市中央区壺川. All rights reserved.
         </p>
       </div>

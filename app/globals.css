@@ -16,116 +16,94 @@ html.text-xl {
 html {
   scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
-  overflow-x: hidden;
+  /* hidden はスクロールコンテナ化して position:sticky を殺すので clip */
+  overflow-x: clip;
 }
 
 body {
-  @apply bg-paper text-ink antialiased font-sans;
+  @apply bg-washi text-ink antialiased font-sans;
   line-height: 1.85;
   text-rendering: optimizeLegibility;
 }
 
+/* 和文の改行を整える：見出しは行頭泣き別れを避け、語中で割らない。
+   （keep-all で漢字語の途中改行を防ぎ、はみ出しは overflow-wrap で保険） */
+h1,
+h2,
+h3 {
+  text-wrap: balance;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+}
+/* 住所・価格など「割れると誤読する短い情報」用 */
+.keep-all {
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+}
+
 ::selection {
-  background: #e9b45a;
-  color: #233a2d;
+  background: #cbd6ba;
+  color: #26331f;
 }
 
 /* フォーカスリング（アクセシビリティ） */
 *:focus-visible {
-  outline: 3px solid #3a5a45;
+  outline: 3px solid #43573a;
   outline-offset: 3px;
   border-radius: 4px;
 }
 
-/* ── 図番ラベル：明朝の見出しに添える標本ラベル ── */
+/* ── 標本ラベル：見出しに添える小さな眉ラベル ── */
 .label {
-  @apply font-mono text-[11px] font-bold uppercase text-pine-500;
-  letter-spacing: 0.22em;
+  @apply font-sans text-xs font-bold uppercase tracking-label text-euca-600;
 }
 
-/* ── ブランドのキービジュアル：黄色い罫線ノート ── */
-.lined-paper {
-  background-color: #fcf4c9;
-  background-image: repeating-linear-gradient(
-    to bottom,
-    transparent 0,
-    transparent 33px,
-    rgba(84, 110, 150, 0.26) 33px,
-    rgba(84, 110, 150, 0.26) 34px
-  );
-}
-/* 手書き見出しを少しだけ太らせてマーカー感を出す */
-.hand-bold {
-  -webkit-text-stroke: 0.6px currentColor;
-}
-
-/* 蜂蜜のマーカー下線（重要語を“塗った”感じ） */
+/* セージのマーカー下線（重要語を“塗った”感じ） */
 .marker {
-  background-image: linear-gradient(transparent 62%, rgba(233, 180, 90, 0.55) 62%);
+  background-image: linear-gradient(transparent 62%, rgba(178, 194, 158, 0.55) 62%);
   background-repeat: no-repeat;
   background-size: 100% 100%;
 }
 
-/* ── 署名：余白の書き込み（ヒーローの注釈線） ── */
-.annot-line {
-  stroke-dasharray: var(--len, 120);
-  stroke-dashoffset: var(--len, 120);
-  animation: annot-draw 0.7s cubic-bezier(0.4, 0.5, 0.2, 1) var(--delay, 0.4s) both;
+/* ── 署名の形：葉のシルエット（対角だけ大きく丸い） ──
+   写真・チップに交互に使う。-r は左右反転。 */
+.leaf-frame {
+  border-radius: 2.75rem 0.9rem 2.75rem 0.9rem;
 }
-@keyframes annot-draw {
-  to {
-    stroke-dashoffset: 0;
-  }
-}
-.annot-chip {
-  opacity: 0;
-  animation: annot-chip 0.5s ease-out var(--delay, 0.6s) both;
-}
-@keyframes annot-chip {
-  from {
-    opacity: 0;
-    transform: translateY(4px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.leaf-frame-r {
+  border-radius: 0.9rem 2.75rem 0.9rem 2.75rem;
 }
 
-/* 注釈の先端リング（脈打つ） */
-.annot-ping {
-  animation: annot-ping 2.6s ease-out infinite;
-}
-@keyframes annot-ping {
-  0% {
-    transform: scale(0.6);
-    opacity: 0.7;
-  }
-  70%,
-  100% {
-    transform: scale(1.9);
-    opacity: 0;
-  }
-}
-
-/* ── スクロールで現れる手描きアニメーション ──
+/* ── スクロールで現れるアニメーション ──
    既定（JS無効 / reduced-motion）は最終状態を表示。
    実際の発火は html.js（JS有効）＋ motion許可時のみ。 */
 .draw {
   stroke-dasharray: var(--len, 340);
   stroke-dashoffset: 0;
 }
+.leaf-pop {
+  transform-box: fill-box;
+  transform-origin: center;
+}
 .reveal-stagger > * {
   opacity: 1;
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  /* 手描きストロークの描き起こし */
+  /* 枝のストロークが上へ伸びる（描き起こし） */
   html.js .reveal .draw {
     stroke-dashoffset: var(--len, 340);
   }
   html.js .reveal.in .draw {
-    animation: annot-draw 0.85s cubic-bezier(0.4, 0.5, 0.2, 1) var(--delay, 0s) forwards;
+    animation: stem-draw 0.9s cubic-bezier(0.4, 0.5, 0.2, 1) var(--delay, 0s) forwards;
+  }
+  /* 葉がふくらんで開く（stagger は --delay で指定） */
+  html.js .reveal .leaf-pop {
+    opacity: 0;
+    scale: 0.4;
+  }
+  html.js .reveal.in .leaf-pop {
+    animation: leaf-pop 0.55s cubic-bezier(0.2, 0.7, 0.3, 1.15) var(--delay, 0s) both;
   }
   /* マーカーを左→右にスッと塗る */
   html.js .reveal .marker {
@@ -134,7 +112,7 @@ body {
   html.js .reveal.in .marker {
     animation: marker-wipe 0.6s ease-out var(--delay, 0.12s) forwards;
   }
-  /* 紙片がふわっと現れる（translateプロパティで傾きと非干渉・stagger） */
+  /* カードがふわっと現れる（stagger） */
   html.js .reveal-stagger:not(.in) > * {
     opacity: 0;
     translate: 0 18px;
@@ -150,6 +128,21 @@ body {
   }
   html.js .reveal-stagger.in > *:nth-child(4) {
     animation-delay: 0.24s;
+  }
+}
+@keyframes stem-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes leaf-pop {
+  from {
+    opacity: 0;
+    scale: 0.4;
+  }
+  to {
+    opacity: 1;
+    scale: 1;
   }
 }
 @keyframes marker-wipe {
@@ -178,11 +171,5 @@ body {
     animation: none !important;
     transition: none !important;
     scroll-behavior: auto !important;
-  }
-  .annot-line {
-    stroke-dashoffset: 0;
-  }
-  .annot-chip {
-    opacity: 1;
   }
 }
